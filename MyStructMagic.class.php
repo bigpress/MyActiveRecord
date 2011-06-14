@@ -1,19 +1,19 @@
 <?php
 /**
-* Requirements : 
-* 	- tested to work with MySQL 5
-*	- tested to work on PHP 5
-*
-* Known bugs :
-*	- multi field indexes, shows only the last component
-*	- buggy key and index support
-*	
-* ToDo list :
-*	- better key and index support
-*	- some semantic updates
-*	- input data validator
-*	- support for triggers and procedures
-*	- anything else feedback shows it is required ...
+ * Requirements : 
+ * 	- tested to work with MySQL 5
+ *	- tested to work on PHP 5
+ *
+ * Known bugs :
+ *	- multi field indexes, shows only the last component
+ *	- buggy key and index support
+ *	
+ * ToDo list :
+ *	- better key and index support
+ *	- some semantic updates
+ *	- input data validator
+ *	- support for triggers and procedures
+ *	- anything else feedback shows it is required ...
  *
  * @category	Database
  * @package		MyActiveRecord
@@ -70,7 +70,7 @@ class MyStructMagic {
 	* 
 	*/
 	public function getRawDestinationData() {
-	  $db =& Database::getInstance();
+		$db =& Database::getInstance();
 
 
 		if( !empty($this->aDestinationData) ) {

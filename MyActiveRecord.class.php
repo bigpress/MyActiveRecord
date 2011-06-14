@@ -1,8 +1,6 @@
 <?php
 
 
-define('MYACTIVERECORD_CACHE_SQL', true);
-
 /**
  * MyActiveRecord
  *
@@ -31,24 +29,6 @@ define('MYACTIVERECORD_CACHE_SQL', true);
  *	3.	Every database table mapped by MyActiveRecord MUST have an 
  *		autoincrementing primary-key named `id`.
  * 
- * Changelog 0.3 - 0.4
- *
- * 1. BUG FIXES
- *	1.1	Error is triggered when connection fails or database cannot be selected
- *	1.2	If Class cannot be found or table cannot be found to match class script
- *		reports error instead of hanging. (this fixes bug introduced in 0.3)
- *	1.3 Removal of error notices on save dues to presumption about existance of 
- *		variables
- *  
- * 2. FIND_CHILDREN() IMPROVEMENTS
- * Added new paramaters to the find_children() method. First the full 
- * complement of Where, OrderBy, Limit and Offset a-la FindAll(). Second, the 
- * addition of a ForeignKey paramater. Useful if you have a table with a
- * two foreign keys pointing to the same table, and so you need to use a 
- * different name to parent_table_id
- *
- * 3. ADDED FREQDIST() WHERE and LIMIT paramaters
- * e.g. print_r( MyActiveRecord::FreqDist( 'Order', 'total_lines', "date BETWEEN '2005-01-01' AND '2006-01-01'" ) )
  *
  *
  * @category	Database
@@ -91,9 +71,8 @@ class MyActiveRecord {
 	 * @param	string	strSQL	A SQL statement
 	 * @return	resource	A MySQL result resource. False on failure.
 	 */
-	function Query($strSQL)
-	{
-$db =& Database::getInstance();
+	function Query($strSQL) {
+		$db =& Database::getInstance();
 
 		if( $rscResult = $db->query($strSQL) )
 		// return result
@@ -750,9 +729,8 @@ $db =& Database::getInstance();
 	 *
 	 * @return	boolean	true on success false on fail
 	 */
-	function save()
-	{
-$db =& Database::getInstance();
+	function save() {
+		$db =& Database::getInstance();
 		// if this object has registered errors, we back off and return false.
 		if( $this->get_errors() )
 		{
