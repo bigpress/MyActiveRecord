@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>MyActiveRecord HowTo</title>
+<style type="text/css">
+	body
+	{
+   		font-family: "Lucida Grande", verdana, sans-serif;
+		color: darkslategray;
+   		font-size: 11px;
+		padding: 10%;
+		padding-top: 0;
+		line-height: 15px;
+		text-align: justify;
+	}
+	
+	h1, h2, h3
+	{
+		font-family: georgia, times;
+		font-weight: normal;
+		margin-top: 2em;
+		margin-bottom: 0px;
+		padding: 0px;
+	}
+
+	h2
+	{
+		border-top: 1px solid slategray;
+		padding-top: 1em;
+	}
+	
+	pre
+	{
+		padding: 1em;
+		border: 1px dotted slategray;
+		color: darkred;
+	}
+	
+	a
+	{
+		text-decoration: none;
+	}
+	
+	a:hover
+	{
+		text-decoration: underline;]
+	}
+	
+</style>
+</head>
+<body>
+<h1>MyActiveRecord: Background</h1>
+
+<p>Surely the last thing PHP needs is 
+	<a href="http://cakephp.org/">yet</a>
+	<a href="http://www.daholygoat.com/jaws/html/index.php?gadget=StaticPage&#038;action=Page&#038;id=8">another</a>
+	<a href="http://shiflett.org/archive/171">interpretation</a>
+	of
+	<a href="http://www.martinfowler.com/eaaCatalog/activeRecord.html">Active Record</a>
+	right?</p>
+
+<p>Maybe, but this stuff is such fun to code, and for me all of those valiant
+copycat attempts still fall short in comparison to the elegant 
+<a href="http://wiki.rubyonrails.com/rails/pages/ActiveRecord">Ruby on Rails 
+version</a>.</p>
+
+<p>The thing I admire most about Rails&#8217; ActiveRecord is the total 
+clarity with which sub-classes represent the database table, and instances
+of those classes represent a row in that table. 
+For <a href="http://blog.joshuaeichorn.com/archives/2006/01/09/zactiverecord-cant-work/">well documented reasons</a>, 
+PHP5 still can&#8217;t pull off this representation, and so most attempts use 
+workarounds that kind of get there in the end, but sacrifice all of the Ruby 
+elegance along the way.</p>
+
+<p>My own hack is to use static methods in the base class to retrieve 
+	instances of subclasses, so that you can use:</p>
+
+<pre>$person = MyActiveRecord::FindById('Person', 12);</pre>
+
+<p>to find an instance of the <code>Person</code> subclass, rather than the preferable, but impossible:</p>
+
+<pre>$person = Person::FindById(12);</pre>
+
+<p>You can consider the base MyActiveRecord class as a kind of static Object/Relational Mapper whilst instances of its subclasses represent specific table rows.</p>
+
+<p>It&#8217;s a kludge, but still better than something like:</p>
+
+<pre>$dummy = new Person();
+$person = $dummy->find_by_id(12);</pre>
+
+<p>Which in my view is just plain wrong architecturally, and also more awkward in use.</p>
+
+<p>MyActiveRecord has some limitations/simplifications but in fact these might be advantages if you&#8217;re after a quick and convenient ORM class to do your bidding, rather than a full-stack regime to tell you what to do. The double-edged limitations in question are:</p>
+
+<h3>No Upfront Declarations</h3>
+
+<p>To represent a table as a class you need do the following:</p>
+<pre>define ('MYACTIVERECORD_CONNECTION_STR', 'mysql://un:pw@yourhost/yourdb');
+include 'MyActiveRecord.php';
+
+class Person extends MyActiveRecord {}</pre>
+<p>And that is all. Obviously this requires some strict schema rules in your database. Each database table is named identically to the class that will represent it (<a href="http://weblog.rubyonrails.org/articles/2005/08/25/10-reasons-rails-does-pluralization">is that really so bad</a>?). Each table must have an auto-incrementing id and foreign keys must be named in the form ForeignTable_id.</p>
+
+<p>The point is that you don&#8217;t need to make <em>any</em> declarations in a constructor or configuration file. This holds for relationships too. There&#8217;s no need to declare a one_to_many relationship upfront if you&#8217;re going to use methods like this:</p>
+<pre>$articles = $person->find_children('Article');</pre>
+
+<p>Of course you might want to add composite properties, validation rules, clean-up routines and so on, but these can be achieved very simply by overloading the methods <code>populate()</code>, <code>save()</code> and <code>destroy()</code>.</p>
+
+<h3>MySQL only</h3>
+<p>It&#8217;s LAMP right? Not LAPP, LAOP, LASSP or LADP. Despite the accusations regularly levelled at MySQL, I think that&#8217;s what most of us use and if you believe in getting everything through your ORM then there&#8217;s a <a href="http://lesscode.org/2005/09/29/should-database-manage-the-meaning/">good argument</a> that you really want your database to play dumb.</p>
+<p>Apart from taking out the overhead of a database abstraction layer, knowing that it&#8217;s MySQL we&#8217;re connecting to enables us to leverage some vendor-specific retrieval methods, and offload type-conversion to the database server.</p>
+<h3>PHP 4 Compatible</h3>
+<p>If anything, the class runs better under PHP5, but PHP4 is still prevalent in most hosting environments including <a href="http://www.mademedia.co.uk">MADE</a>&#8217;s main web-server and this is intended to be a convenient, simple class rather than a paragon of PHP architecture. For that reason PHP4 compatibility is maintained, but that means</p>
+<ol>
+<li>triggering errors rather than exceptions</li>
+<li>&#8216;StaticMethods&#8217; are implied by naming convention rather than enforced by the static keyword</li>
+<li>not leveraging <code>__get()</code>, <code>__set()</code> or <code>__call()</code>, all magic methods that could be really handy in a class like this&#8230;</li>
+</ol>
+<h3>It&#8217;s quite big</h3>
+<p>You might easily argue that the class is monolithic and attempts to take on too much of the problem. It might be nicer to abstract the database-connection, table, column,  errors and validation-routines into their own classes, but then before you know it you have an ORM framework that requires a book of its own to understand and that&#8217;s absolutely what I&#8217;m NOT trying to do.</p>
+</body>
+</html>

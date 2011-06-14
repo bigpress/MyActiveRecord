@@ -1,0 +1,1981 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<title>Docs For Class MyActiveRecord</title>
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+			<style type="text/css">
+				body
+				{
+			   		font-family: "Lucida Grande", verdana, sans-serif;
+					color: darkslategray;
+			   		font-size: 75%;
+					padding: 10%;
+					padding-top: 0;
+					text-align: justify;
+				}
+
+				h1, h2, h3, .info-box-title, .method-header
+				{
+					font-family: georgia, times;
+					font-weight: normal;
+					margin-top: 2em;
+					margin-bottom: 0px;
+					padding: 0px;
+				}
+				
+				h2.class-name
+				{
+					font-size:  300%;
+					color: gray;
+				}
+				
+				.info-box-title
+				{
+					font-size: 200%;
+				}
+				
+				.method-header
+				{
+					font-size: 150%;
+					margin-top: 2em;
+				}
+				
+				.method-title
+				{
+					font-family: monaco, courier, monospace;
+				}
+
+				h2
+				{
+					border-top: 1px solid slategray;
+					padding-top: 1em;
+				}
+
+				pre
+				{
+					padding: 1em;
+					border: 1px dotted slategray;
+					color: darkred;
+				}
+
+				a
+				{
+					text-decoration: none;
+				}
+
+				a:hover
+				{
+					text-decoration: underline;
+				}
+
+			</style>
+		</head>
+		<body>
+			<div class="page-body">			
+				<h2 class="class-name">Class MyActiveRecord</h2>
+
+				<a name="sec-description"></a>
+				<div class="info-box">
+					<div class="info-box-title">Description</div>
+					<div class="nav-bar">
+									<span class="disabled">Description</span> |
+																			<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+
+							</div>
+					<div class="info-box-body">
+						<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">MyActiveRecord</p>
+				<p class="description"><p>A simple, speedy Object/Relational Mapper for MySQL based on Martin  Fowler's ActiveRecord pattern and heavily influenced by the implementation  of the same name in Ruby on Rails.</p><p>Features</p><p>-	Mapping of table to class and row to object 	-	Relationship retrieval 	-	Data validation and error handling 	-	PHP5 and PHP4 compatibility</p><p>License</p><p>Copyright (c) 2006, Jake Grimley	&lt;jake.grimley@mademedia.co.uk&gt;  All rights reserved.</p><p>Redistribution and use in source and binary forms, with or without  modification, are permitted provided that the following conditions are met:</p><p>-	Redistributions of source code must retain the above copyright notice, 		this list of conditions and the following disclaimer.</p><p>-	Redistributions in binary form must reproduce the above copyright 		notice, this list of conditions and the following disclaimer in the 		documentation and/or other materials provided with the distribution.</p><p>-	Neither the name of Made Media Ltd. nor the names of its contributors 		may be used to endorse or promote products derived from this 		software without specific prior written permission.</p><p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS 	IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, 	THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR 	PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR 	CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, 	EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, 	PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR 	PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF 	LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING 	NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS 	SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p><p>Limitations</p><p>This class acheives simplicty of use and implementation through the  following 'by-design' limitations:</p><p>1.	This class talks to MySQL only.</p><p>2.	Table/Class mapping is achieved by each database table being named 		IDENTICALLY to the MyActiveRecord subclass that will represent it 		(but in lowercase for compatibility reasons).</p><p>3.	Every database table mapped by MyActiveRecord MUST have an 		autoincrementing primary-key named `id`.</p><p>Changelog 0.3 - 0.4</p><p><ol><li>BUG FIXES</li></ol>	1.1	Error is triggered when connection fails or database cannot be selected 	1.2	If Class cannot be found or table cannot be found to match class script 		reports error instead of hanging. (this fixes bug introduced in 0.3) 	1.3 Removal of error notices on save dues to presumption about existance of 		variables</p><p>2. FIND_CHILDREN() IMPROVEMENTS  Added new paramaters to the find_children() method. First the full  complement of Where, OrderBy, Limit and Offset a-la FindAll(). Second, the  addition of a ForeignKey paramater. Useful if you have a table with a  two foreign keys pointing to the same table, and so you need to use a  different name to parent_table_id</p><p>3. ADDED FREQDIST() WHERE and LIMIT paramaters  e.g. print_r( MyActiveRecord::FreqDist( 'Order', 'total_lines', &quot;date BETWEEN '2005-01-01' AND '2006-01-01'&quot; ) )</p></p>
+					<ul class="tags">
+								<li><span class="field">version:</span> 0.4</li>
+								<li><span class="field">copyright:</span> 2006 Jake Grimley</li>
+								<li><span class="field">author:</span> Jake Grimley &lt;<a href="mailto:jake.grimley@mademedia.co.uk">mailto:jake.grimley@mademedia.co.uk</a>&gt;</li>
+							</ul>
+						<p class="notes">
+							Located in <a class="field" href="_phplib_MyActiveRecord_0_4_php.html">/MyActiveRecord.0.4.php</a> (line <span class="field">90</span>)
+						</p>
+
+
+						<pre></pre>
+
+							</div>
+				</div>
+
+
+
+					<a name="sec-method-summary"></a>
+					<div class="info-box">
+						<div class="info-box-title">Method Summary</span></div>
+						<div class="nav-bar">
+							<a href="#sec-description">Description</a> |
+													<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+						</div>
+						<div class="info-box-body">			
+							<div class="method-summary">
+
+								<div class="method-definition">
+															<span class="method-result">void</span>
+														<a href="#add_child" title="details" class="method-name">add_child</a>
+															(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$properties</span> = <span class="var-default">null</span>])
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">void</span>
+														<a href="#add_error" title="details" class="method-name">add_error</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strKey</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strMessage</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">boolean</span>
+														<a href="#AllowNull" title="details" class="method-name">AllowNull</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strTable</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strField</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">boolean</span>
+														<a href="#attach" title="details" class="method-name">attach</a>
+															(<span class="var-type">object</span>&nbsp;<span class="var-name">&$obj</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">void</span>
+														<a href="#Begin" title="details" class="method-name">Begin</a>
+														()
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">string</span>
+														<a href="#Class2Table" title="details" class="method-name">Class2Table</a>
+															(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$mxd</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">array</span>
+														<a href="#Columns" title="details" class="method-name">Columns</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strTable</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">void</span>
+														<a href="#Commit" title="details" class="method-name">Commit</a>
+														()
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">resource</span>
+														<a href="#Connection" title="details" class="method-name">Connection</a>
+														()
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">integer</span>
+														<a href="#Count" title="details" class="method-name">Count</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$strWhere</span> = <span class="var-default">'1=1'</span>])
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">object of</span>
+														<a href="#Create" title="details" class="method-name">&amp;Create</a>
+															(<span class="var-type">strClass,</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$arrVals</span> = <span class="var-default">null</span>])
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">string</span>
+														<a href="#DbDate" title="details" class="method-name">DbDate</a>
+															([<span class="var-type">int</span>&nbsp;<span class="var-name">$intTimeStamp</span> = <span class="var-default">null</span>])
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">string</span>
+														<a href="#DbDateTime" title="details" class="method-name">DbDateTime</a>
+															([<span class="var-type">int</span>&nbsp;<span class="var-name">$intTimeStamp</span> = <span class="var-default">null</span>])
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">void</span>
+														<a href="#delete" title="details" class="method-name">delete</a>
+														()
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">boolean</span>
+														<a href="#destroy" title="details" class="method-name">destroy</a>
+														()
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">void</span>
+														<a href="#detach" title="details" class="method-name">detach</a>
+															(<span class="var-type">object</span>&nbsp;<span class="var-name">&$obj</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">mixed</span>
+														<a href="#Escape" title="details" class="method-name">Escape</a>
+															(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$mixVal</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">array</span>
+														<a href="#FindAll" title="details" class="method-name">FindAll</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$mxdWhere</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$strOrderBy</span> = <span class="var-default">'id ASC'</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$intLimit</span> = <span class="var-default">10000</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$intOffset</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">mixed</span>
+														<a href="#FindById" title="details" class="method-name">FindById</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$mxdID</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">array</span>
+														<a href="#FindBySql" title="details" class="method-name">FindBySql</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strSQL</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$strIndexBy</span> = <span class="var-default">'id'</span>])
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">object,</span>
+														<a href="#FindFirst" title="details" class="method-name">FindFirst</a>
+															(<span class="var-type">strClass</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">strWhere</span>&nbsp;<span class="var-name">$strWhere</span> = <span class="var-default">NULL</span>], [<span class="var-type">strOrderBy</span>&nbsp;<span class="var-name">$strOrderBy</span> = <span class="var-default">'id ASC'</span>])
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">void</span>
+														<a href="#find_attached" title="details" class="method-name">find_attached</a>
+															(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$strCondition</span> = <span class="var-default">NULL</span>])
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">array</span>
+														<a href="#find_children" title="details" class="method-name">find_children</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$mxdCondition</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$strOrderBy</span> = <span class="var-default">'id ASC'</span>], [<span class="var-type">integer</span>&nbsp;<span class="var-name">$intLimit</span> = <span class="var-default">10000</span>], <span class="var-type">integer</span>&nbsp;<span class="var-name">$intOffset</span>, [<span class="var-type">strForeignKey</span>&nbsp;<span class="var-name">$strForeignKey</span> = <span class="var-default">NULL</span>], <span class="var-type">mixed</span>&nbsp;<span class="var-name">6</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">array</span>
+														<a href="#find_linked" title="details" class="method-name">find_linked</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$mxdCondition</span> = <span class="var-default">null</span>], [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$strOrder</span> = <span class="var-default">null</span>])
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">object object</span>
+														<a href="#find_parent" title="details" class="method-name">find_parent</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$strForeignKey</span> = <span class="var-default">NULL</span>])
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">array</span>
+														<a href="#FreqDist" title="details" class="method-name">FreqDist</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strTable</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strColumn</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$strWhere</span> = <span class="var-default">'1=1'</span>], [<span class="var-type">integer</span>&nbsp;<span class="var-name">$strOrder</span> = <span class="var-default">null</span>], [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$intLimit</span> = <span class="var-default">1000</span>])
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">integer</span>
+														<a href="#GetLen" title="details" class="method-name">GetLen</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strTable</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strField</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">string</span>
+														<a href="#GetLinkTable" title="details" class="method-name">GetLinkTable</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass1</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strClass2</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">string</span>
+														<a href="#GetType" title="details" class="method-name">GetType</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strTable</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strField</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">string</span>
+														<a href="#get_error" title="details" class="method-name">get_error</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strKey</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">array</span>
+														<a href="#get_errors" title="details" class="method-name">get_errors</a>
+														()
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">void</span>
+														<a href="#get_timestamp" title="details" class="method-name">get_timestamp</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strKey</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">void</span>
+														<a href="#h" title="details" class="method-name">h</a>
+															(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$key</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">boolean</span>
+														<a href="#Insert" title="details" class="method-name">Insert</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$properties</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">boolean</span>
+														<a href="#Link" title="details" class="method-name">Link</a>
+															(<span class="var-type">object</span>&nbsp;<span class="var-name">&$obj1</span>, <span class="var-type">object</span>&nbsp;<span class="var-name">&$obj2</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">boolean</span>
+														<a href="#populate" title="details" class="method-name">populate</a>
+															(<span class="var-type">array</span>&nbsp;<span class="var-name">$arrVals</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">void</span>
+														<a href="#Prepare" title="details" class="method-name">Prepare</a>
+														()
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">resource</span>
+														<a href="#Query" title="details" class="method-name">Query</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strSQL</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">void</span>
+														<a href="#RollBack" title="details" class="method-name">RollBack</a>
+														()
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">boolean</span>
+														<a href="#save" title="details" class="method-name">save</a>
+														()
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">boolean</span>
+														<a href="#set_attached" title="details" class="method-name">set_attached</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$arrID</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">void</span>
+														<a href="#set_date" title="details" class="method-name">set_date</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strKey</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$intTimeStamp</span> = <span class="var-default">null</span>])
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">void</span>
+														<a href="#set_datetime" title="details" class="method-name">set_datetime</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strKey</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$intTimeStamp</span> = <span class="var-default">null</span>])
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">bool</span>
+														<a href="#TableExists" title="details" class="method-name">TableExists</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strTable</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">array</span>
+														<a href="#Tables" title="details" class="method-name">Tables</a>
+														()
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">int</span>
+														<a href="#TimeStamp" title="details" class="method-name">TimeStamp</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strMySQLDate</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">void</span>
+														<a href="#to_str" title="details" class="method-name">to_str</a>
+														()
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">true</span>
+														<a href="#UnLink" title="details" class="method-name">UnLink</a>
+															(<span class="var-type">$obj1</span>&nbsp;<span class="var-name">&$obj1</span>, <span class="var-type">$obj2</span>&nbsp;<span class="var-name">&$obj2</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">void</span>
+														<a href="#Update" title="details" class="method-name">Update</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$id</span>, <span class="var-type">arrray</span>&nbsp;<span class="var-name">$properties</span>, <span class="var-type">boolean</span>&nbsp;<span class="var-name">3</span>)
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">boolean</span>
+														<a href="#validate_regexp" title="details" class="method-name">validate_regexp</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strKey</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strRegExp</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$strMessage</span> = <span class="var-default">null</span>])
+													</div>
+
+								<div class="method-definition">
+															<span class="method-result">boolean</span>
+														<a href="#validate_uniqueness_of" title="details" class="method-name">validate_uniqueness_of</a>
+															(<span class="var-type">string</span>&nbsp;<span class="var-name">$strKey</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$strMessage</span> = <span class="var-default">null</span>])
+													</div>
+											</div>
+						</div>
+					</div>		
+
+
+					<a name="sec-methods"></a>
+					<div class="info-box">
+						<div class="info-box-title">Methods</div>
+						<div class="nav-bar">
+							<a href="#sec-description">Description</a> |
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+
+						</div>
+						<div class="info-box-body">
+							<A NAME='method_detail'></A>
+				<a name="methodadd_child" id="add_child"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">add_child</span> (line <span class="line-number">924</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+
+					<div class="method-signature">
+						<span class="method-result">void</span>
+						<span class="method-name">
+							add_child
+						</span>
+									(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$properties</span> = <span class="var-default">null</span>])
+							</div>
+
+
+
+					</div>
+				<a name="methodadd_error" id="add_error"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">add_error</span> (line <span class="line-number">1177</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Adds an error to the object. The existence of errors  ensures that $object-&gt;save() will return false and  will not attempt to persist the object to the database  This can be used for validation of the object.</p>
+				<p class="description"><p>e.g.  <pre><code><pre><br />1     <span class="src-key">if</span><span class="src-sym">(</span> <span class="src-key">empty</span><span class="src-sym">(</span> <span class="src-var">$user</span><span class="src-sym">-&gt;</span><span class="src-id">first_name</span> <span class="src-sym">)</span> <span class="src-sym">)</span> <span class="src-var">$user</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methodadd_error">add_error</a><span class="src-sym">(</span><span class="src-str">'first_name'</span><span class="src-sym">,</span> <span class="src-str">'First Name may not be blank!'</span><span class="src-sym">)</span>;<br />2      <span class="src-var">$user</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methodsave">save</a> <span class="src-key">or</span> <a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span><span class="src-var">$user</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methodget_errors">get_errors</a><span class="src-sym">)</span></pre></code></pre></p></p>
+
+					<div class="method-signature">
+						<span class="method-result">void</span>
+						<span class="method-name">
+							add_error
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strKey</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strMessage</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strKey</span><span class="var-description">: strKey    the name of the invalid key/property/attribute</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strMessage</span><span class="var-description">: strMessage    a message, which you may want to report back to the user in due course</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodAllowNull" id="AllowNull"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">AllowNull</span> (line <span class="line-number">385</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">finds out whether a NULL value is allowed in a specified field in a  specified table</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> True if this field allows nulls. False if not.</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">boolean</span>
+						<span class="method-name">
+							AllowNull
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strTable</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strField</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strTable</span><span class="var-description">: strTable    Name of database table</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strField</span><span class="var-description">: strField    Name of field in table</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodattach" id="attach"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">attach</span> (line <span class="line-number">946</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Attaches another object to the object</p>
+				<p class="description"><p>NB: You must have saved the object you want to attach before attaching  it eg:  <pre><code><pre><br />1     <span class="src-var">$post</span> = <span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodCreate">Create</a><span class="src-sym">(</span><span class="src-str">'Post'</span><span class="src-sym">)</span>;<br />2      <span class="src-var">$post</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methodpopulate">populate</a><span class="src-sym">(</span> <span class="src-str">'title'</span>=&gt;<span class="src-str">'New Post'</span> <span class="src-sym">)</span>;<br />3      <span class="src-var">$post</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methodsave">save</a><span class="src-sym">(</span><span class="src-sym">)</span>;<br />4      <span class="src-var">$topic</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methodattach">attach</a><span class="src-sym">(</span><span class="src-str">'post'</span><span class="src-sym">)</span>;</pre></code></pre></p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> True on success. False on failure.</li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">boolean</span>
+						<span class="method-name">
+							attach
+						</span>
+									(<span class="var-type">object</span>&nbsp;<span class="var-name">&$obj</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">object</span>
+								<span class="var-name">$obj</span><span class="var-description">: the object you wish to attach</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodBegin" id="Begin"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">Begin</span> (line <span class="line-number">773</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Static method to begin a transaction</p>
+					<ul class="tags">
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">void</span>
+						<span class="method-name">
+							Begin
+						</span>
+								()
+							</div>
+
+
+
+					</div>
+				<a name="methodClass2Table" id="Class2Table"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">Class2Table</span> (line <span class="line-number">260</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">gets table representing class in database</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> name of table in database representing class(string) or object             false if no table found</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">string</span>
+						<span class="method-name">
+							Class2Table
+						</span>
+									(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$mxd</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">mixed</span>
+								<span class="var-name">$mxd</span><span class="var-description">: either a string(class name) or an object</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodColumns" id="Columns"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">Columns</span> (line <span class="line-number">292</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Returns an array describing the specified table, or false if the table  does not exist in the database.</p>
+				<p class="description"><p>The array contains one array per database column, keyed by the column  name. To see the structure of the array you could try:  <pre><code><pre><br />1     <a href="http://www.php.net/print_r">print_r</a><span class="src-sym">(</span> <span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodColumns">Columns</a><span class="src-sym">(</span><span class="src-str">'your_table'</span><span class="src-sym">)</span> <span class="src-sym">)</span>;</pre></code></pre></p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> Table columns. False if the table does not exist.</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">array</span>
+						<span class="method-name">
+							Columns
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strTable</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strTable</span><span class="var-description">: strTable    The name of the database table</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodCommit" id="Commit"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">Commit</span> (line <span class="line-number">791</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Static method to commit a transaction</p>
+					<ul class="tags">
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">void</span>
+						<span class="method-name">
+							Commit
+						</span>
+								()
+							</div>
+
+
+
+					</div>
+				<a name="methodConnection" id="Connection"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">Connection</span> (line <span class="line-number">109</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Returns a database connection to be used by the class.</p>
+				<p class="description"><p>If you want, you can borrow this for access to a mysql database  resource:  e.g.:  <pre><code><pre><br />1     <span class="src-var">$result</span> = <span class="src-id">mysql_Query</span><span class="src-sym">(</span><span class="src-var">$query</span><span class="src-sym">,</span> <span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodConnection">Connection</a><span class="src-sym">(</span><span class="src-sym">)</span> <span class="src-sym">)</span>;</pre></code></pre></p><p>This method uses the global constant MYACTIVERECORD_CONNECTION_STR for the  connection paramaters. This is a string with the following format:  mysql://user:passord@host/db</p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> mysql connection</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">resource</span>
+						<span class="method-name">
+							Connection
+						</span>
+								()
+							</div>
+
+
+
+					</div>
+				<a name="methodCount" id="Count"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">Count</span> (line <span class="line-number">533</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Counts the number of rows in the database matching the optional</p>
+				<p class="description"><p>condition. eg:  <pre><code><pre><br />1     print <span class="src-str">'There are '</span>.<span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodCount">Count</a><span class="src-sym">(</span><span class="src-str">'Person'</span><span class="src-sym">)</span>.<span class="src-str">' People in the database.'</span>;<br />2      print <span class="src-str">'There are '</span>.<span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodCount">Count</a><span class="src-sym">(</span><span class="src-str">'Person'</span><span class="src-sym">,</span> <span class="src-str">&quot;last_name LIKE 'Smith'&quot;</span><span class="src-sym">)</span>.<span class="src-str">' People with the surname Smith'</span>;</pre></code></pre></p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> Count. False if the query fails.</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">integer</span>
+						<span class="method-name">
+							Count
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$strWhere</span> = <span class="var-default">'1=1'</span>])
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strClass</span><span class="var-description">: strClass, the name of the class for which you want to create an object.</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodCreate" id="Create"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">Create</span> (line <span class="line-number">510</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Creates a new object of class strClass. strClass should be  an extension of MyActiveRecord. arrVals is an optional array of values.</p>
+				<p class="description"><p>e.g.:  <pre><code><pre><br />1     <span class="src-var">$person</span> = <span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodCreate">Create</a><span class="src-sym">(</span><span class="src-str">'Person'</span><span class="src-sym">,</span> <span class="src-key">array</span><span class="src-sym">(</span> <span class="src-id">first_name</span>=&gt;<span class="src-str">'Jake'</span><span class="src-sym">,</span> <span class="src-id">last_name</span>=&gt;&quot;<span class="src-id">Grimley</span>' ) );</pre></code></pre></p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> class strClass</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">object of</span>
+						<span class="method-name">
+							&amp;Create
+						</span>
+									(<span class="var-type">strClass,</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$arrVals</span> = <span class="var-default">null</span>])
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">strClass,</span>
+								<span class="var-name">$strClass</span><span class="var-description">: the name of the subclass.</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodDbDate" id="DbDate"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">DbDate</span> (line <span class="line-number">195</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">return a date formatted for the database</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> mysql format date string</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">string</span>
+						<span class="method-name">
+							DbDate
+						</span>
+									([<span class="var-type">int</span>&nbsp;<span class="var-name">$intTimeStamp</span> = <span class="var-default">null</span>])
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">int</span>
+								<span class="var-name">$intTimeStamp</span><span class="var-description">: intTimeStamp    A unix timestamp</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodDbDateTime" id="DbDateTime"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">DbDateTime</span> (line <span class="line-number">206</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">return a datetime formatted for the database</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> mysql format datetime string</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">string</span>
+						<span class="method-name">
+							DbDateTime
+						</span>
+									([<span class="var-type">int</span>&nbsp;<span class="var-name">$intTimeStamp</span> = <span class="var-default">null</span>])
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">int</span>
+								<span class="var-name">$intTimeStamp</span><span class="var-description">: intTimeStamp    A unix timestamp</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methoddelete" id="delete"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">delete</span> (line <span class="line-number">907</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">alias of destroy()</p>
+					<ul class="tags">
+								<li><span class="field">see:</span> <a href="../MyActiveRecord/MyActiveRecord.html#methoddestroy">MyActiveRecord::destroy()</a></li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">void</span>
+						<span class="method-name">
+							delete
+						</span>
+								()
+							</div>
+
+
+
+					</div>
+				<a name="methoddestroy" id="destroy"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">destroy</span> (line <span class="line-number">897</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Deletes the object from the database</p>
+				<p class="description"><p>eg:  <pre><code><pre><br />1     <span class="src-var">$car</span> = <span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodFindById">FindById</a><span class="src-sym">(</span><span class="src-str">'Car'</span><span class="src-sym">,</span> <span class="src-num">1</span><span class="src-sym">)</span>;<br />2      <span class="src-var">$car</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methoddestroy">destroy</a><span class="src-sym">(</span><span class="src-sym">)</span>;</pre></code></pre></p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> True on success, False on failure</li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">boolean</span>
+						<span class="method-name">
+							destroy
+						</span>
+								()
+							</div>
+
+
+
+					</div>
+				<a name="methoddetach" id="detach"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">detach</span> (line <span class="line-number">975</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Detaches an object from the object</p>
+				<p class="description"><p>eg:  <pre><code><pre><br />1     <span class="src-comm">// detach old posts</span><br />2      <span class="src-key">foreach</span><span class="src-sym">(</span> <span class="src-var">$topic</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methodfind_attached">find_attached</a><span class="src-sym">(</span><span class="src-str">'Post'</span><span class="src-sym">)</span> <span class="src-key">as</span> <span class="src-var">$post</span> <span class="src-sym">)</span><br />3      <span class="src-sym">{</span><br />4          <span class="src-key">if</span><span class="src-sym">(</span> <span class="src-var">$post</span><span class="src-sym">-&gt;</span><span class="src-id">created</span> &lt; <a href="http://www.php.net/mktime">mktime</a><span class="src-sym">(</span><span class="src-sym">)</span>-<span class="src-num">5000000</span> <span class="src-sym">)</span><br />5         <span class="src-sym">{</span><br />6             <span class="src-var">$topic</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methoddetach">detach</a><span class="src-sym">(</span><span class="src-var">$post</span><span class="src-sym">)</span>;<br />7         <span class="src-sym">}</span><br />8      <span class="src-sym">}</span></pre></code></pre></p></p>
+
+					<div class="method-signature">
+						<span class="method-result">void</span>
+						<span class="method-name">
+							detach
+						</span>
+									(<span class="var-type">object</span>&nbsp;<span class="var-name">&$obj</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">object</span>
+								<span class="var-name">$obj</span><span class="var-description">: object to be detached</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodEscape" id="Escape"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">Escape</span> (line <span class="line-number">406</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Escapes a value against a field type in preparation for adding to a sql  query. Escaping includes wrapping the value in single quotes</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> escaped value eg: 1, 'o\'reilly' etc.</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">mixed</span>
+						<span class="method-name">
+							Escape
+						</span>
+									(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$mixVal</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">mixed</span>
+								<span class="var-name">$mixVal</span><span class="var-description">: mixVal    value, eg: true, 1, 'elephant' etc.</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodFindAll" id="FindAll"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">FindAll</span> (line <span class="line-number">609</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Returns an array of all objects of class strClass found in database</p>
+				<p class="description"><p>optional where, order and limit paramaters enable the results to be  narrowed down. eg:  <pre><code><pre><br />1     <span class="src-var">$cars</span> = <span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodFindAll">FindAll</a><span class="src-sym">(</span><span class="src-str">'Car'</span><span class="src-sym">)</span>;<br />2      <span class="src-var">$cars</span> = <span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodFindAll">FindAll</a><span class="src-sym">(</span><span class="src-str">'Car'</span><span class="src-sym">,</span> <span class="src-str">&quot;colour='red'&quot;</span><span class="src-sym">,</span> <span class="src-str">'make ASC'</span><span class="src-sym">,</span> <span class="src-num">10</span><span class="src-sym">)</span>;</pre></code></pre></p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> Array of objects. Array is empty if no ojbects found</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">array</span>
+						<span class="method-name">
+							FindAll
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$mxdWhere</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$strOrderBy</span> = <span class="var-default">'id ASC'</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$intLimit</span> = <span class="var-default">10000</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$intOffset</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strClass</span><span class="var-description">: strClass    the name of the class for which you want objects</span>			</li>
+									<li>
+								<span class="var-type">mixed</span>
+								<span class="var-name">$mxdWhere</span><span class="var-description">: mxdWhere    optional SQL WHERE fragment, eg: &quot;username='fred' AND password='123'&quot;                                 can also be expressed as array, e.g. array( 'username'=&gt;'fred', password=&gt;'123')</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strOrderBy</span><span class="var-description">: strOrderBy    optional SQL ORDER BY fragment, eg: &quot;username ASC&quot;</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$intLimit</span><span class="var-description">: intLimit    optional integer limiting the number of records returned</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$intOffset</span><span class="var-description">: intOffset    optional integer to offset the first record brought back</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodFindById" id="FindById"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">FindById</span> (line <span class="line-number">684</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Returns an object of class strClass found in database with a specific</p>
+				<p class="description"><p>integer ID. An array of integers can be passed in order to retrieve an  array of objects with matching IDs  eg:  <pre><code><pre><br />1     <span class="src-var">$car</span> = <span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodFindById">FindById</a><span class="src-sym">(</span><span class="src-num">15</span><span class="src-sym">)</span>;<br />2      <span class="src-var">$cars</span> = <span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodFindById">FindById</a><span class="src-sym">(</span><span class="src-num">3</span><span class="src-sym">,</span> <span class="src-num">5</span><span class="src-sym">,</span> <span class="src-num">13</span><span class="src-sym">)</span>;</pre></code></pre></p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> object, or array of objects</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">mixed</span>
+						<span class="method-name">
+							FindById
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$mxdID</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strClass</span><span class="var-description">: strClass    the name of the class for which you want objects</span>			</li>
+									<li>
+								<span class="var-type">mixed</span>
+								<span class="var-name">$mxdID</span><span class="var-description">: mxdID    integer or array of integers</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodFindBySql" id="FindBySql"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">FindBySql</span> (line <span class="line-number">561</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Returns an array of objects of class strClass mapped from SQL query</p>
+				<p class="description"><p>strSQL. eg:  <pre><code><pre><br />1     <span class="src-var">$people</span> = <span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><span class="src-sym">(</span><span class="src-str">'Person'</span><span class="src-sym">,</span> <span class="src-str">'SELECT * FROM person ORDER BY first_name'</span><span class="src-sym">)</span>;<br />2      <span class="src-key">foreach</span><span class="src-sym">(</span> <span class="src-var">$people</span> <span class="src-key">as</span> <span class="src-var">$person</span> <span class="src-sym">)</span> print <span class="src-var">$person</span><span class="src-sym">-&gt;</span><span class="src-id">first_name</span>;</pre></code></pre></p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> array of objects of class strClass</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">array</span>
+						<span class="method-name">
+							FindBySql
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strSQL</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$strIndexBy</span> = <span class="var-default">'id'</span>])
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strClass</span><span class="var-description">: strClass    The name of the class for which you want to return objects.</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strSQL</span><span class="var-description">: strSQL    The SQL query</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodFindFirst" id="FindFirst"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">FindFirst</span> (line <span class="line-number">656</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Returns the first object of class strClass found in database</p>
+				<p class="description"><p>optional where, order and limit paramaters enable the results to be  narrowed down  eg:  <pre><code><pre><br />1     <span class="src-var">$car</span> = <span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodFindFirst">FindFirst</a><span class="src-sym">(</span><span class="src-str">'Car'</span><span class="src-sym">,</span> <span class="src-str">&quot;colour='red'&quot;</span><span class="src-sym">,</span> <span class="src-str">'model ASC'</span><span class="src-sym">)</span>;</pre></code></pre></p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> false if no objects found</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">object,</span>
+						<span class="method-name">
+							FindFirst
+						</span>
+									(<span class="var-type">strClass</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">strWhere</span>&nbsp;<span class="var-name">$strWhere</span> = <span class="var-default">NULL</span>], [<span class="var-type">strOrderBy</span>&nbsp;<span class="var-name">$strOrderBy</span> = <span class="var-default">'id ASC'</span>])
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">strClass</span>
+								<span class="var-name">$strClass</span><span class="var-description">: string, the name of the class for which you want objects</span>			</li>
+									<li>
+								<span class="var-type">strWhere</span>
+								<span class="var-name">$strWhere</span><span class="var-description">: optional SQL WHERE argument, eg: &quot;username='fred' AND password='123'&quot;</span>			</li>
+									<li>
+								<span class="var-type">strOrderBy</span>
+								<span class="var-name">$strOrderBy</span><span class="var-description">: optional SQL ORDER BY argument, eg: &quot;username ASC&quot;</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodfind_attached" id="find_attached"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">find_attached</span> (line <span class="line-number">1157</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Alias of find_linked()</p>
+					<ul class="tags">
+								<li><span class="field">link:</span> <a href="../MyActiveRecord/MyActiveRecord.html#methodfind_linked">find_linked()</a></li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">void</span>
+						<span class="method-name">
+							find_attached
+						</span>
+									(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$strCondition</span> = <span class="var-default">NULL</span>])
+							</div>
+
+
+
+					</div>
+				<a name="methodfind_children" id="find_children"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">find_children</span> (line <span class="line-number">1089</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">returns array of 'child' objects.</p>
+				<p class="description"><p>e.g.  <pre><code><pre><br />1     <span class="src-key">foreach</span><span class="src-sym">(</span> <span class="src-var">$topic</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methodfind_children">find_children</a><span class="src-sym">(</span><span class="src-str">'Post'</span><span class="src-sym">)</span> <span class="src-key">as</span> <span class="src-var">$post</span> <span class="src-sym">)</span> print <span class="src-var">$post</span><span class="src-sym">-&gt;</span><span class="src-id">subject</span>;</pre></code></pre></p><p>In order for the above to work, you would need to have an integer field called 'Topic_id'  in your 'Post' table. MyActiveRecord will take care of the rest.</p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> array containing objects of class strClass</li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">array</span>
+						<span class="method-name">
+							find_children
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$mxdCondition</span> = <span class="var-default">NULL</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$strOrderBy</span> = <span class="var-default">'id ASC'</span>], [<span class="var-type">integer</span>&nbsp;<span class="var-name">$intLimit</span> = <span class="var-default">10000</span>], <span class="var-type">integer</span>&nbsp;<span class="var-name">$intOffset</span>, [<span class="var-type">strForeignKey</span>&nbsp;<span class="var-name">$strForeignKey</span> = <span class="var-default">NULL</span>], <span class="var-type">mixed</span>&nbsp;<span class="var-name">6</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">mixed</span>
+								<span class="var-name">6</span><span class="var-description">: optional sql condition expressed as either a sql string or an array                     eg:    'flagged=true' or array( 'flagged'=&gt;1 );</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strClass</span><span class="var-description">: strClass    Name of the class of objects to return in the array</span>			</li>
+									<li>
+								<span class="var-type">mixed</span>
+								<span class="var-name">$mxdCondition</span><span class="var-description">: mxdCondition Either a SQL 'WHERE' fragment or an array of paramaters that must be matched ( see FindAll() )</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strOrderBy</span><span class="var-description">: strOrderBy    a SQL ORDER BY strring fragment</span>			</li>
+									<li>
+								<span class="var-type">integer</span>
+								<span class="var-name">$intLimit</span><span class="var-description">: intLimit    limit on number of records to retrieve</span>			</li>
+									<li>
+								<span class="var-type">integer</span>
+								<span class="var-name">$intOffset</span><span class="var-description">: intOffset    if you don't want to begin with the first child you can add an offset here</span>			</li>
+									<li>
+								<span class="var-type">strForeignKey</span>
+								<span class="var-name">$strForeignKey</span><span class="var-description">: if the foreign key is not parent_id but something different you can specify here</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodfind_linked" id="find_linked"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">find_linked</span> (line <span class="line-number">1123</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">returns array of 'linked' objects. (many-to-many relationship)  e.g.</p>
+				<p class="description"><p><pre><code><pre><br />1     <span class="src-key">foreach</span><span class="src-sym">(</span> <span class="src-var">$user</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methodfind_linked">find_linked</a><span class="src-sym">(</span><span class="src-str">'Role'</span><span class="src-sym">)</span> <span class="src-key">as</span> <span class="src-var">$role</span> <span class="src-sym">)</span> print <span class="src-var">$role</span><span class="src-sym">-&gt;</span><span class="src-id">name</span>;</pre></code></pre></p><p>In order for the above to work, you would need to have a linking table  called Role_User in your database, containing the fields role_id and user_id</p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> array containing objects of class strClass</li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">array</span>
+						<span class="method-name">
+							find_linked
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$mxdCondition</span> = <span class="var-default">null</span>], [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$strOrder</span> = <span class="var-default">null</span>])
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strClass</span><span class="var-description">: strClass    Name of the class of objects to return in the array</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$mxdCondition</span><span class="var-description">: strCondition    Optional SQL condition, e.g. 'password NOT NULL'</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodfind_parent" id="find_parent"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">find_parent</span> (line <span class="line-number">1063</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">returns 'parent' object.</p>
+				<p class="description"><p>e.g.  <pre><code><pre><br />1     <span class="src-var">$topic</span> = <span class="src-var">$post</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methodfind_parent">find_parent</a><span class="src-sym">(</span><span class="src-str">'Topic'</span><span class="src-sym">)</span>;</pre></code></pre></p><p>In order for the above to work, you would need to have an integer  field called 'Topic_id' in your 'Post' table. MyActiveRecord will take  care of the rest.</p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> of class strClass</li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">object object</span>
+						<span class="method-name">
+							find_parent
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$strForeignKey</span> = <span class="var-default">NULL</span>])
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strClass</span><span class="var-description">: strClass    Name of the class of objects to return in the array</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strForeignKey</span><span class="var-description">: strForeignKey    Optional specification of foreign key at runtime</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodFreqDist" id="FreqDist"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">FreqDist</span> (line <span class="line-number">716</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Static Method to retrieve an array of unique values for a table/column</p>
+				<p class="description"><p>along with the total records featuring that unique value  eg:  <pre><code><pre><br />1     <span class="src-key">foreach</span><span class="src-sym">(</span> <span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodFreqDist">FreqDist</a><span class="src-sym">(</span><span class="src-str">'Person'</span><span class="src-sym">,</span> <span class="src-str">'first_name'</span><span class="src-sym">)</span> <span class="src-key">as</span> <span class="src-var">$name</span>=&gt;<span class="src-var">$total</span> <span class="src-sym">)</span><br />2      <span class="src-sym">{</span><br />3         print &quot;<span class="src-id">There</span> <span class="src-id">are</span> <span class="src-var">$total</span> <span class="src-id">people</span> <span class="src-id">with</span> <span class="src-id">the</span> <span class="src-id">first</span> <span class="src-id">name</span> '<span class="src-var">$name</span>'&quot;;<br />4      <span class="src-sym">}</span></pre></code></pre></p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> array with keys containing distinct values and values containing totals</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">array</span>
+						<span class="method-name">
+							FreqDist
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strTable</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strColumn</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$strWhere</span> = <span class="var-default">'1=1'</span>], [<span class="var-type">integer</span>&nbsp;<span class="var-name">$strOrder</span> = <span class="var-default">null</span>], [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$intLimit</span> = <span class="var-default">1000</span>])
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strTable</span><span class="var-description">: strTable    name of database table</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strColumn</span><span class="var-description">: strColumn    name of column in table</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strWhere</span><span class="var-description">: strOrder    optional sql ORDER fragment (i.e. 'name ASC')</span>			</li>
+									<li>
+								<span class="var-type">integer</span>
+								<span class="var-name">$strOrder</span><span class="var-description">: limit        optional sql LIMIT to number of rows returned</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodGetLen" id="GetLen"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">GetLen</span> (line <span class="line-number">361</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">gets the maximum allowed length of a specified field in a specified  table</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> Maximum length of field. False if not found.</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">integer</span>
+						<span class="method-name">
+							GetLen
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strTable</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strField</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strTable</span><span class="var-description">: strTable    Name of database table</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strField</span><span class="var-description">: strField    Name of field in table</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodGetLinkTable" id="GetLinkTable"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">GetLinkTable</span> (line <span class="line-number">440</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Given the names of two classes/database tables this method returns</p>
+				<p class="description"><p>the name of the table which would link them in a many-to-many  relationship e.g:  <pre><code><pre><br />1     print <a href="../MyActiveRecord/MyActiveRecord.html#methodGetLinkTable">GetLinkTable</a><span class="src-sym">(</span><span class="src-str">'Driver'</span><span class="src-sym">,</span> <span class="src-str">'Car'</span><span class="src-sym">)</span>    </pre></code></pre></p><p>note that the linking table will order the names of the tables it links  alphabetically. If you intend to have a many-to-many relationship  between two classes, you need to create this table in your database.  The table should have two indexed fields, providing foreign keys to the  tables they link, e.g. Driver_id, Car_id</p><p>NB: This function does NOT check that the table actually exists in the  database, but presumes that it does.</p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> name of linking table</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">string</span>
+						<span class="method-name">
+							GetLinkTable
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass1</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strClass2</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strClass1</span><span class="var-description">: strClass1    name of first class/table, e.g. 'Person'</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strClass2</span><span class="var-description">: strClass2    name of second class/table e.g. 'Role'</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodGetType" id="GetType"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">GetType</span> (line <span class="line-number">337</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Gets the 'type' of a specific field in a specified table  (i.e 'int'|'float'|'date'|'char'|'text')</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> Field type (e.g. 'int'|'float'|'date'|'char'|'text' ).                     False if not found.</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">string</span>
+						<span class="method-name">
+							GetType
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strTable</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strField</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strTable</span><span class="var-description">: strTable    Name of database table</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strField</span><span class="var-description">: strField    Name of field in table</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodget_error" id="get_error"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">get_error</span> (line <span class="line-number">1189</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Gets an error on a specified attribute.</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> Error Message. False if no error</li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">string</span>
+						<span class="method-name">
+							get_error
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strKey</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strKey</span><span class="var-description">: strKey    name of field/attribute/key</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodget_errors" id="get_errors"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">get_errors</span> (line <span class="line-number">1207</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Returns all errors.</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> Array of errors, keyed by attribute.                     False if there are no errors.</li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">array</span>
+						<span class="method-name">
+							get_errors
+						</span>
+								()
+							</div>
+
+
+
+					</div>
+				<a name="methodget_timestamp" id="get_timestamp"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">get_timestamp</span> (line <span class="line-number">1043</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Retrieves a date or datetime fields as a unix timestamp</p>
+
+					<div class="method-signature">
+						<span class="method-result">void</span>
+						<span class="method-name">
+							get_timestamp
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strKey</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strKey</span><span class="var-description">: strKey    property to be retrieved</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodh" id="h"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">h</span> (line <span class="line-number">1270</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Returns html-escaped property value for convenience</p>
+				<p class="description"><p>eg:  <pre><code><pre><br />1     <span class="src-php">&lt;?</span> print <span class="src-var">$user</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methodh">h</a><span class="src-sym">(</span><span class="src-str">'name'</span><span class="src-sym">)</span> <span class="src-php">?&gt;</span></pre></code></pre></p></p>
+
+					<div class="method-signature">
+						<span class="method-result">void</span>
+						<span class="method-name">
+							h
+						</span>
+									(<span class="var-type">mixed</span>&nbsp;<span class="var-name">$key</span>)
+							</div>
+
+
+
+					</div>
+				<a name="methodInsert" id="Insert"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">Insert</span> (line <span class="line-number">742</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Static method to insert a new row into the database using class strClass</p>
+				<p class="description"><p>and using the values in properties  eg:  <pre><code><pre><br />1     <span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodInsert">Insert</a><span class="src-sym">(</span> <span class="src-str">'Car'</span><span class="src-sym">,</span> <span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'make'</span>=&gt;<span class="src-str">'Citroen'</span><span class="src-sym">,</span> <span class="src-str">'model'</span>=&gt;<span class="src-str">'C4'</span><span class="src-sym">,</span> <span class="src-str">'colour'</span>=&gt;<span class="src-str">'Silver'</span><span class="src-sym">)</span> <span class="src-sym">)</span>;</pre></code></pre></p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> true or false depending upon whether insert is successful</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">boolean</span>
+						<span class="method-name">
+							Insert
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$properties</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strClass</span><span class="var-description">: strClass    the name of the class/table</span>			</li>
+									<li>
+								<span class="var-type">array</span>
+								<span class="var-name">$properties</span><span class="var-description">: properties    array/hash of properties for object/row</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodLink" id="Link"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">Link</span> (line <span class="line-number">456</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Links two objects together. Presumes the existance of a linking table.</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> true on success, false on failure</li>
+								<li><span class="field">see:</span> <a href="../MyActiveRecord/MyActiveRecord.html#methodGetLinkTable">MyActiveRecord::GetLinkTable()</a></li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">boolean</span>
+						<span class="method-name">
+							Link
+						</span>
+									(<span class="var-type">object</span>&nbsp;<span class="var-name">&$obj1</span>, <span class="var-type">object</span>&nbsp;<span class="var-name">&$obj2</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">object</span>
+								<span class="var-name">$obj1</span><span class="var-description">: An Object from a subclass of MyActiveRecord</span>			</li>
+									<li>
+								<span class="var-type">object</span>
+								<span class="var-name">$obj2</span><span class="var-description">: An Object from a subclass of MyActiveRecord</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodpopulate" id="populate"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">populate</span> (line <span class="line-number">871</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Sets all object properties via an array</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> true if $arrVals is valid array, false if not</li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">boolean</span>
+						<span class="method-name">
+							populate
+						</span>
+									(<span class="var-type">array</span>&nbsp;<span class="var-name">$arrVals</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">array</span>
+								<span class="var-name">$arrVals</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodPrepare" id="Prepare"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">Prepare</span> (line <span class="line-number">149</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+
+					<div class="method-signature">
+						<span class="method-result">void</span>
+						<span class="method-name">
+							Prepare
+						</span>
+								()
+							</div>
+
+
+
+					</div>
+				<a name="methodQuery" id="Query"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">Query</span> (line <span class="line-number">166</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Execute a SQL Query using Connection()</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> A MySQL result resource. False on failure.</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">resource</span>
+						<span class="method-name">
+							Query
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strSQL</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strSQL</span><span class="var-description">: strSQL    A SQL statement</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodRollBack" id="RollBack"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">RollBack</span> (line <span class="line-number">782</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Static method to roll back a transaction</p>
+					<ul class="tags">
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">void</span>
+						<span class="method-name">
+							RollBack
+						</span>
+								()
+							</div>
+
+
+
+					</div>
+				<a name="methodsave" id="save"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">save</span> (line <span class="line-number">811</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Saves the object back to the database</p>
+				<p class="description"><p>eg:  <pre><code><pre><br />1     <span class="src-var">$car</span> = <span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodCreate">Create</a><span class="src-sym">(</span><span class="src-str">'Car'</span><span class="src-sym">)</span>;<br />2      print <span class="src-var">$car</span><span class="src-sym">-&gt;</span><span class="src-id">id</span>;    <span class="src-comm">// NULL</span><br />3      <span class="src-var">$car</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methodsave">save</a><span class="src-sym">(</span><span class="src-sym">)</span>;<br />4      print <span class="src-var">$car</span><span class="src-sym">-&gt;</span><span class="src-id">id</span>; </pre></code></pre></p><p>NB: if the object has registered errors, save() will return false  without attempting to save the object to the database</p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> true on success false on fail</li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">boolean</span>
+						<span class="method-name">
+							save
+						</span>
+								()
+							</div>
+
+
+
+					</div>
+				<a name="methodset_attached" id="set_attached"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">set_attached</span> (line <span class="line-number">994</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Sets all attached links via an array of IDs  e.g.</p>
+				<p class="description"><p><pre><code><pre><br />1     <span class="src-var">$topic</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methodset_attached">set_attached</a><span class="src-sym">(</span><span class="src-str">'Post'</span><span class="src-sym">,</span> <span class="src-key">array</span><span class="src-sym">(</span><span class="src-num">1</span><span class="src-sym">,</span> <span class="src-num">8</span><span class="src-sym">,</span> <span class="src-num">32</span><span class="src-sym">)</span> <span class="src-sym">)</span>;<br />2      <span class="src-var">$topic</span><span class="src-sym">-&gt;</span><a href="../MyActiveRecord/MyActiveRecord.html#methodset_attached">set_attached</a><span class="src-sym">(</span><span class="src-str">'Post'</span><span class="src-sym">,</span> <span class="src-var">$_POST</span><span class="src-sym">[</span><span class="src-str">'id_list'</span><span class="src-sym">]</span><span class="src-sym">)</span>;</pre></code></pre>  NB: set_attached will destroy any existing attachments for the class strClass  BEFORE creating new attachments</p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> True on success. False on failure.</li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">boolean</span>
+						<span class="method-name">
+							set_attached
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, <span class="var-type">array</span>&nbsp;<span class="var-name">$arrID</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strClass</span><span class="var-description">: strClass    class of objects to be set as attached</span>			</li>
+									<li>
+								<span class="var-type">array</span>
+								<span class="var-name">$arrID</span><span class="var-description">: arrID        array of object IDs</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodset_date" id="set_date"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">set_date</span> (line <span class="line-number">1024</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Sets the date of the property specified by strKey</p>
+
+					<div class="method-signature">
+						<span class="method-result">void</span>
+						<span class="method-name">
+							set_date
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strKey</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$intTimeStamp</span> = <span class="var-default">null</span>])
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strKey</span><span class="var-description">: strKey    property to be set</span>			</li>
+									<li>
+								<span class="var-type">int</span>
+								<span class="var-name">$intTimeStamp</span><span class="var-description">: intTimeStamp    unix timestamp</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodset_datetime" id="set_datetime"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">set_datetime</span> (line <span class="line-number">1034</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Sets the datetime of the property specified by strKey</p>
+
+					<div class="method-signature">
+						<span class="method-result">void</span>
+						<span class="method-name">
+							set_datetime
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strKey</span>, [<span class="var-type">int</span>&nbsp;<span class="var-name">$intTimeStamp</span> = <span class="var-default">null</span>])
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strKey</span><span class="var-description">: strKey    property to be set</span>			</li>
+									<li>
+								<span class="var-type">int</span>
+								<span class="var-name">$intTimeStamp</span><span class="var-description">: intTimeStamp    unix timestamp</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodTableExists" id="TableExists"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">TableExists</span> (line <span class="line-number">248</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">checks to see if strTable exists in database returning true or false</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> true/false</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">bool</span>
+						<span class="method-name">
+							TableExists
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strTable</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strTable</span><span class="var-description">: strTable    name of table to check for</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodTables" id="Tables"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">Tables</span> (line <span class="line-number">227</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">return an array containing names of tables in database</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> names of tables in database</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">array</span>
+						<span class="method-name">
+							Tables
+						</span>
+								()
+							</div>
+
+
+
+					</div>
+				<a name="methodTimeStamp" id="TimeStamp"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">TimeStamp</span> (line <span class="line-number">217</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">return a unix timestamp from a database field</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> unix timestamp</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">int</span>
+						<span class="method-name">
+							TimeStamp
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strMySQLDate</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strMySQLDate</span><span class="var-description">: mysql datetime</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodto_str" id="to_str"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">to_str</span> (line <span class="line-number">1275</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+
+					<div class="method-signature">
+						<span class="method-result">void</span>
+						<span class="method-name">
+							to_str
+						</span>
+								()
+							</div>
+
+
+
+					</div>
+				<a name="methodUnLink" id="UnLink"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">UnLink</span> (line <span class="line-number">481</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Destroys a link between two objects where it exists</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> on success, false on failure</li>
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">true</span>
+						<span class="method-name">
+							UnLink
+						</span>
+									(<span class="var-type">$obj1</span>&nbsp;<span class="var-name">&$obj1</span>, <span class="var-type">$obj2</span>&nbsp;<span class="var-name">&$obj2</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">$obj1</span>
+								<span class="var-name">&$obj1</span><span class="var-description">: An Object from a subclass of MyActiveRecord</span>			</li>
+									<li>
+								<span class="var-type">$obj2</span>
+								<span class="var-name">&$obj2</span><span class="var-description">: An Object from a subclass of MyActiveRecord</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodUpdate" id="Update"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">Update</span> (line <span class="line-number">762</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Static method to update a row in the database using class strClass</p>
+				<p class="description"><p>and using the values in properties  eg:  <pre><code><pre><br />1     <span class="src-id"><a href="../MyActiveRecord/MyActiveRecord.html">MyActiveRecord</a></span><span class="src-sym">::</span><a href="../MyActiveRecord/MyActiveRecord.html#methodUpdate">Update</a><span class="src-sym">(</span> <span class="src-str">'Car'</span><span class="src-sym">,</span> <span class="src-num">1</span><span class="src-sym">,</span> <span class="src-key">array</span><span class="src-sym">(</span><span class="src-str">'make'</span>=&gt;<span class="src-str">'Citroen'</span><span class="src-sym">,</span> <span class="src-str">'model'</span>=&gt;<span class="src-str">'C4'</span><span class="src-sym">,</span> <span class="src-str">'colour'</span>=&gt;<span class="src-str">'Silver'</span><span class="src-sym">)</span> <span class="src-sym">)</span>;</pre></code></pre></p></p>
+					<ul class="tags">
+								<li><span class="field">static:</span> </li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">void</span>
+						<span class="method-name">
+							Update
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strClass</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$id</span>, <span class="var-type">arrray</span>&nbsp;<span class="var-name">$properties</span>, <span class="var-type">boolean</span>&nbsp;<span class="var-name">3</span>)
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">boolean</span>
+								<span class="var-name">3</span><span class="var-description">: true or false depending upon whether update is sucessful</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strClass</span><span class="var-description">: strClass    the name of the class/table</span>			</li>
+									<li>
+								<span class="var-type">int</span>
+								<span class="var-name">$id</span><span class="var-description">: id            the id of the row be updated.</span>			</li>
+									<li>
+								<span class="var-type">arrray</span>
+								<span class="var-name">$properties</span><span class="var-description">: properties    array/hash of properties for object/row</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodvalidate_regexp" id="validate_regexp"><!-- --></a>
+				<div class="oddrow">
+
+					<div class="method-header">
+						<span class="method-title">validate_regexp</span> (line <span class="line-number">1229</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Validates the value of an attribute against a regular  expression, adding an error to the object if the value  does not match.</p>
+					<ul class="tags">
+								<li><span class="field">return:</span> True if the field matches. False if it does not match.</li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">boolean</span>
+						<span class="method-name">
+							validate_regexp
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strKey</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$strRegExp</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$strMessage</span> = <span class="var-default">null</span>])
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strKey</span><span class="var-description">: strKey    name of field/attribute/key</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strRegExp</span><span class="var-description">: strRegExp    Regular Expression</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strMessage</span><span class="var-description">: strMessage    Error message to record if value does not match</span>			</li>
+								</ul>
+
+
+					</div>
+				<a name="methodvalidate_uniqueness_of" id="validate_uniqueness_of"><!-- --></a>
+				<div class="evenrow">
+
+					<div class="method-header">
+						<span class="method-title">validate_uniqueness_of</span> (line <span class="line-number">1250</span>)
+					</div> 
+
+					<!-- ========== Info from phpDoc block ========= -->
+				<p class="short-description">Validates the uniqueness of the value of a given field/key.</p>
+				<p class="description"><p>Adds error to object if field is not unique</p></p>
+					<ul class="tags">
+								<li><span class="field">return:</span> true if field is unique, false if not</li>
+							</ul>
+
+					<div class="method-signature">
+						<span class="method-result">boolean</span>
+						<span class="method-name">
+							validate_uniqueness_of
+						</span>
+									(<span class="var-type">string</span>&nbsp;<span class="var-name">$strKey</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$strMessage</span> = <span class="var-default">null</span>])
+							</div>
+
+							<ul class="parameters">
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strKey</span><span class="var-description">: strKey    name of field/attribute/key</span>			</li>
+									<li>
+								<span class="var-type">string</span>
+								<span class="var-name">$strMessage</span><span class="var-description">: strMessage    Error message to record if value is not unique</span>			</li>
+								</ul>
+
+
+					</div>
+
+						</div>
+					</div>
+
+					<p class="notes" id="credit">
+						Documentation generated on Sat, 18 Nov 2006 18:33:37 +0000 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.2.3</a>
+					</p>
+					</div>
+	</body>
+</html>

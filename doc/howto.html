@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN"
+	"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>MyActiveRecord HowTo</title>
+<style type="text/css">
+	body
+	{
+   		font-family: "Lucida Grande", verdana, sans-serif;
+		color: darkslategray;
+   		font-size: 75%;
+		padding: 10%;
+		padding-top: 0;
+		text-align: justify;
+	}
+	
+	h1, h2, h3
+	{
+		font-family: georgia, times;
+		font-weight: normal;
+		margin-top: 2em;
+		margin-bottom: 0px;
+		padding: 0px;
+	}
+
+	h2
+	{
+		border-top: 1px solid slategray;
+		padding-top: 1em;
+	}
+	
+	pre
+	{
+		padding: 1em;
+		border: 1px dotted slategray;
+		color: darkred;
+	}
+	
+	a
+	{
+		text-decoration: none;
+	}
+	
+	a:hover
+	{
+		text-decoration: underline;
+	}
+	
+</style>
+</head>
+<body>
+<h1>MyActiveRecord: HowTo</h1>
+<p><strong>Updated Oct 4 2006 (version 0.3)</strong></p>
+
+<h2 id="contents">Contents</h2>
+
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#connecting">Connecting to your Database</a></li>
+<li><a href="#mapping">Table/Class Mapping</a></li>
+<li><a href="#instantiating">Instantiating MyActiveRecord Objects and Assigning Values</a></li>
+<li><a href="#persisting">Persisting/Saving Objects</a></li>
+<li><a href="#finding">Finding/Retrieving Objects</a></li>
+<li><a href="#destroying">Destroying Objects</a></li>
+<li><a href="#relationships">Relationships</a>
+<ul>
+<li><a href="#one-to-many">One to Many or Parent/Child</a></li>
+<li><a href="#many-to-many">Many to Many</a></li>
+</ul></li>
+<li><a href="#inheritance">Enriching Your Data Model via Inheritance</a>
+<ul>
+<li><a href="#findby">Custom Static FindBy Methods</a></li>
+<li><a href="#compund">Creating Compound Properties</a></li>
+<li><a href="#validation">Data Validation on Save</a></li>
+<li><a href="#cleaning-up">Cleaning Up on Destruction</a></li>
+</ul></li>
+<li><a href="#transactions">Transactions</a></li>
+<li><a href="#singletableinheritance">Single Table Inheritance</a></li>
+<li><a href="#preparingsql">Preparing SQL Statements</a></li>
+<li><a href="#loggingsql">Logging &amp; Caching SQL</a></li>
+<li><a href="#freqdist">Frequency Distributions</a></li>
+</ul>
+
+<h2 id="introduction">Introduction</h2>
+
+<p><code>MyActiveRecord</code> is an Object Relational Mapper. It exists to translate
+records within MySQL database tables into PHP objects and to persist those
+objects back to the database.</p>
+
+<p><code>MyActiveRecord</code> follows the 
+<a href="http://www.martinfowler.com/eaaCatalog/activeRecord.html">Active Record</a> 
+pattern to the extent that this is currently possible within PHP. Static class 
+methods are used to do the mapping. Tables are represented by subclasses of 
+<code>MyActiveRecord</code>. Individual records are represented by instances of 
+these subclasses.</p>
+
+<a href="#contents">^ Contents</a>
+
+<h2 id="connecting">Connecting to your Database</h2>
+
+<pre><code>include 'MyActiveRecord.0.3.php';
+define('MYACTIVERECORD_CONNECTION_STR', 'mysql://user:pass@host/database');
+</code></pre>
+
+<p><code>MyActiveRecord</code> uses a connection string to connect to your database. This is 
+defined by the constant <code>MYACTIVERECORD_CONNECTION_STR</code>, using the format as 
+shown above.</p>
+
+<p>Note: Although <code>MyActiveRecord</code> is only designed to work with MySQL, the 
+<code>mysql://</code> part of the uri is still required.</p>
+
+<a href="#contents">^ Contents</a>
+
+<h2 id="mapping">Table/Class Mapping</h2>
+
+<p>Let's say we have two tables in our database. The SQL might look like this:</p>
+
+<pre><code>
+CREATE TABLE car
+(
+    id int(11) NOT NULL auto_increment,
+    make varchar(50) NOT NULL default '',
+    model varchar(50) NOT NULL default '',
+    colour varchar(50) default NULL,
+    driver_id int(11) default NULL,
+    PRIMARY KEY (id)
+)
+
+CREATE TABLE driver 
+(
+    id int(11) NOT NULL auto_increment,
+    first varchar(50) default NULL,
+    last varchar(50) default NULL,
+    PRIMARY KEY (id)
+)
+</code></pre>
+
+<p>In order to map these database tables to classes in our PHP application we
+simply add the following to our script:</p>
+
+<pre><code>
+class Driver extends MyActiveRecord 
+{
+}
+
+class Car extends MyActiveRecord 
+{
+}
+</code></pre>
+
+<p>That's right - to use <code>MyActiveRecord</code>, you must name your database tables
+<em>Identically</em>* to those PHP classes that will represent them. 
+That means that <code>MyActiveRecord</code> is really best suited to building new applications. 
+Note that there is no special restriction over how you name your classes, so if you are 
+building a new application it's really not much of an issue.</p>
+
+<p><code>MyActiveRecord</code> will automatically look up the fields in the tables and 
+translate them to class properties as required.</p>
+
+<p><small>* It is necessary to name your database tables in lowercase because PHP4's 
+<code><a href="http://www.php.net/get_class">get_class()</a></code> function does not 
+preserve case properly. In order to guarantee compatibility with various hosting
+environments it has been necessary to stipulate that tables are named in lowercase.
+This contravenes advice given with the release of MyActiveRecord 0.2.</small></p>
+
+<a href="#contents">^ Contents</a>
+
+
+<h2 id="instantiating">Instantiating MyActiveRecord Objects and Assigning Values</h2>
+
+<pre><code>
+$driver = new Driver();
+$driver-&gt;first = 'Jake';
+$driver-&gt;last = 'Grimley';
+</code></pre>
+
+<p>Here we create a new <code>Driver</code> object and set some properties. At the moment 
+this object only exists in the PHP script, we have not saved it to the 
+database yet.</p>
+
+<pre><code>
+$driver = MyActiveRecord::Create('Driver', array('first'=&gt;'Jake','last'=&gt;'Grimley' ) );
+</code></pre>
+
+<p>This is equivalent shorthand to the code above. The array of properties is 
+optional and convenient.</p>
+
+<p>Actually the <code>$driver = MyActiveRecord:Create('Class')</code> style has an 
+additional advantage. If your database table has default values set for 
+various columns, then these values will also be set in your new object.</p>
+
+<p>You can assign a bunch of variables at any time using the <code>populate</code> method:</p>
+
+<pre><code>
+$driver-&gt;populate( array('first'=&gt;'Jake', 'last'=&gt;'Grimley') );
+</code></pre>
+
+<p>Consider the following:</p>
+
+<pre><code>
+$driver-&gt;populate($_POST);
+</code></pre>
+
+<p>And the power of this approach should become apparent.</p>
+
+<a href="#contents">^ Contents</a>
+
+<h2 id="persisting">Persisting/Saving Objects</h2>
+
+<pre><code>
+$driver-&gt;save();
+print $driver-&gt;id;
+</code></pre>
+
+<p>Saving the object to the database is simple as the example above. Furthermore,
+the saved object will now have an <code>id</code> property, which means we know how to 
+recall that object from the database in future. In fact this means that each 
+table in your database for which you want to use MyActiveRecord 
+<em>must</em> have an auto-incrementing primary-key named <code>id</code>.</p>
+
+<p>The <code>save()</code> method can also be used on objects that already exist in the 
+database, and that is how you perform updates to existing records. Of course, 
+in order to do this, you must have some way of retrieving records from the 
+database, which brings us on to the next set of examples.</p>
+
+<a href="#contents">^ Contents</a>
+
+<h2 id="finding">Finding/Retrieving Objects</h2>
+
+<p>Let's say the last example showed us an <code>id</code> of 1, because we saved the first 
+<code>driver</code> object to the database. We can then retrieve that <code>driver</code> at any 
+time using this static method call:</p>
+
+<pre><code>
+$driver = MyActiveRecord::FindById('Driver', 1);
+</code></pre>
+
+<p>Hopefully this example is fairly self-explanatory and simple.</p>
+
+<p>But what if we don't have the <code>id</code> to hand? Perhaps we know this driver's last
+name but not the <code>id</code> of the record:</p>
+
+<pre><code>
+$driver = MyActiveRecord::FindFirst('Driver', array('last'=&gt;'Grimley') );
+</code></pre>
+
+<p>The call above, will retrieve the first available <code>driver</code> record with the 
+field 'last' set to 'Grimley'. The array is an optional filter and is a clean
+way of specifying a condition. You could easily chain additional conditions
+within the same array. <code>MyActiveRecord</code> will also automatically escape the 
+contents of the array so that <code>array('last'=&gt;"o'neil")</code> does not present a
+problem. This offers some protection against SQL injection attacks, although
+for more complex conditions you will need to take-care of your own escaping.</p>
+
+<pre><code>
+$drivers = MyActiveRecord::FindAll('Driver');
+</code></pre>
+
+<p>This example will retrieve an array of <code>driver</code> objects, each 
+corresponding to a record in the <code>Driver</code> table. Conveniently the array is 
+keyed by each object's <code>id</code>. This enables you to do things like:</p>
+
+<pre><code>
+foreach( MyActiveRecord:FindAll('Driver') as $driver )
+{
+    print_r($driver);
+}
+</code></pre>
+
+<p>and:</p>
+
+<pre><code>
+$drivers = MyActiveRecord::FindAll('Driver');
+print_r( $drivers[5] );
+</code></pre>
+
+<p>Like the <code>FindFirst()</code> method, the <code>FindAll</code> method can have additional 
+filters. The following three lines are all equivalent:</p>
+
+<pre><code>
+$drivers = MyActiveRecord::FindBySql('Driver', "SELECT * FROM Driver WHERE last = 'Grimley' ORDER BY first");
+
+$drivers = MyActiveRecord::FindAll('Driver', "last = 'Grimley'", 'first');
+
+$drivers= MyActiveRecord::FindAll('Driver', array('last'=&gt;'Grimley'), 'first ASC');
+</code></pre>
+
+<p>If you wish to revert entirely to SQL you can do. If you prefer <code>FindAll()</code>
+to do the work, you can do. However, you can just pass fragments of SQL to the
+<code>FindAll</code> to narrow down the results.</p>
+
+<p>You can express the WHERE condition as an array in the case of simple match
+conditions, or you can write the fragment of SQL that belongs after the 
+<code>WHERE</code> keyword. You can pass an additional <code>ORDER</code> statement. Valid examples 
+include: <code>'first'</code>, <code>'first, last'</code>, <code>'first ASC, last DESC'</code>.</p>
+
+<a href="#contents">^ Contents</a>
+
+<h2 id="destroying">Destroying Objects</h2>
+
+<p>Destroying an object is as simple as retrieving an object from the database
+and calling the <code>destroy()</code> method:</p>
+
+<pre><code>
+$driver-&gt;destroy();
+</code></pre>
+
+<p>You might destroy multiple objects like this:</p>
+
+<pre><code>
+foreach( MyActiveRecord::FindAll('Driver', "last='Grimley'") as $driver ) $driver-&gt;destroy();
+</code></pre>
+
+<p>Hopefully the power of the object-orientated domain model is starting to show!</p>
+
+<p>Note that the object continues to exist in your script even after the destroy
+method has been called. Whilst a little counter-intuitive, this rarely causes
+problems and can actually prove quite useful.</p>
+
+<p><a href="#contents">^ Contents</a></p>
+
+
+<h2 id="relationships">Relationships</h2>
+
+<p>One of the most useful things about representing database records as objects 
+is that we can easily use object methods to retrieve related objects from the
+database for us.</p>
+
+<h3 id="one-to-many">One to Many or Parent/Child</h3>
+
+<p>Let's say that we have a <code>Car</code> table in the database, and we've set up a 
+<code>MyActiveRecord</code> subclass called <code>Car</code> to represent it.</p>
+
+<p>If a particular driver, owns a particular car we can express and record this
+in the following way:</p>
+
+<pre><code>
+$driver-&gt;car_id = $car-&gt;id;
+$driver-&gt;save();
+</code></pre>
+
+<p>This is an example of a <strong>one-to-many relationship</strong> (<em>one</em> <code>driver</code> may own 
+<em>many</em> <code>cars</code>). Here we see another database constraint, which is that you
+must name  foreign keys in your database in the form <code>foreigntable_id</code>.</p>
+
+<p>Note that before you can establish that relationship both the $car and $driver
+object must exist, and the car must have been saved to the database.
+i.e. you need a valid <code>$car-&gt;id</code>.</p>
+
+<p>To retrieve the owner of a car we can do the following:</p>
+
+<pre><code>
+$owner = $car-&gt;find_parent('Driver');
+</code></pre>
+
+<p>Conversely, to find all of a <code>driver</code>'s cars we can use:</p>
+
+<pre><code>
+$cars = $owner-&gt;find_children('Car');
+</code></pre>
+
+<p><code>$cars</code> is an array of <code>car</code> objects.</p>
+
+<h3 id="many-to-many">Many to Many</h3>
+
+<p>Many-to-many relationships are slightly more complex to represent in the
+database, but just as simple to manage in your PHP script.</p>
+
+<p>To continue our theme, one <code>driver</code> might be authorized to drive 
+<em>many</em> <code>cars</code>, and one <code>car</code> might be driven by <em>many</em> <code>drivers</code>.</p>
+
+<p>Here's an example based on my personal situation:</p>
+
+<pre><code>// create the cars
+$c4 = MyActiveRecord::Create('Car', array( 'make'=&gt;'Citroen', 'model'=&gt;'C4' ) );
+$ka = MyActiveRecord::Create('Car', array( 'make'=&gt;'Ford', 'model'=&gt;'Ka' );
+$c4-&gt;save();
+$ka-&gt;save();
+
+// create the people (drivers)
+$jana = MyActiveRecord::Create('Driver', array('first'=&gt;'Jake', 'last'=&gt;'Grimley') );
+$jake = MyActiveRecord:Create('Driver', array('first'=&gt;'Jana', 'last'=&gt;'Grimley') );
+$jana-&gt;save();
+$jake-&gt;save();
+
+// specify the relationships
+$c4-&gt;attach($jake);
+$c4-&gt;attach($jana);
+$ka-&gt;attach($jake);
+$ka-&gt;attach($jana);
+
+// what do we get?
+$jake_drives = $jake-&gt;find_attached('Car');
+$c4_drivers = $jake-&gt;find_attached('Driver');
+</code></pre>
+
+<p>In the above example <code>$jake_drives</code> would be an array containing a <code>car</code>
+object for each car that Jake drives. <code>c4_drivers</code> would be an array 
+containing a <code>driver</code> object for each driver of the c4.</p>
+
+<p>Predictably, there is also a <code>detach()</code> method for breaking the link between
+objects:</p>
+
+<pre><code>
+$c4-&gt;detach($jana);
+</code></pre>
+
+<p>Furthermore, there are some static methods you can use to achieve the same
+effect:</p>
+
+<pre><code>
+MyActiveRecord::Link( $jake, $c4 );
+MyActiveRecord::UnLink( $jake, $ka );
+</code></pre>
+
+<p>All of the above relies on the last of our database schema constraints:</p>
+
+<p>For each many-to-many relationship, you must have a linking table. In the case
+of the example above this would be:</p>
+
+<pre><code>
+CREATE TABLE `Car_Driver`
+(
+    `Car_id` int(11) default NULL,
+    `Driver_id` int(11) default NULL
+)
+</code></pre>
+
+<p>Note that the name of the joining table is the name of each table, <em>in 
+alphabetical order</em>, linked by an underscore.</p>
+
+<a href="#contents">^ Contents</a>
+
+<h2 id="inheritance">Enriching Your Data Model via Inheritance</h2>
+
+<p>All of the above is very nice, allowing us to work with database tables and 
+records really easily, with minimum code, but we expect more from our 
+object-orientated domain model than this!</p>
+
+<p>By overloading the methods in our <code>MyActiveRecord</code> subclasses we can create 
+rich functionality on top of our data. Consider the following:</p>
+
+<h3 id="findby">Custom Static FindBy Methods</h3>
+
+<pre><code>
+class Driver extends MyActiveRecord
+{
+    function FindByLast($lastname)
+    {
+        return MyActiveRecord::FindAll('Oerson', array('last'=&gt;$lastname) );
+    }
+}
+</code></pre>
+
+<p>By creating our own static FindBy methods we can create a more expressive
+domain language, guard against SQL injection attacks and encapsulate complex
+logic.</p>
+
+<h3 id="compund">Creating Compound Properties</h3>
+
+<pre><code>
+class Driver extends MyActiveRecord
+{
+    function populate($array)
+    {
+        parent::populate($array);
+        $this-&gt;full_name = $this-&gt;first.' '.$this-&gt;last;
+    }
+}
+</code></pre>
+
+<p>In this example, by creating the compound property <code>full_name</code> we have the
+convenience of being able to refer to <code>$driver-&gt;full_name</code> as required without
+storing redundant data in the database.</p>
+
+<h3 id="validation">Data Validation on Save</h3>
+
+<pre><code>
+class Driver extends MyActiveRecord
+{
+    function save()
+    {
+        if( empty('first') ) 
+            $this-&gt;add_error('First Name can not be empty', 'first');
+        if( empty('last') ) 
+            $this-&gt;add_error('Last Name can not be empty', 'last');
+        return parent::save();
+    }
+}
+</code></pre>
+
+<p>A handy feature of the <code>save()</code> method, is that it will refuse to actually
+save, and instead return <code>false</code> if the object has any registered errors. The 
+<code>add_error()</code> method can be used to add errors. the <code>get_errors()</code> method will 
+retrieve an array of error messages keyed by object property. This makes it 
+very easy to overload the <code>save()</code> method with error checking so that you can
+automatically prevent bad data from getting into your database. </p>
+
+<p>You can also validate properties against regular expressions with ease using 
+the <code>validate_regexp()</code> method.</p>
+
+<h3 id="cleaning-up">Cleaning Up on Destruction</h3>
+
+<p>Perhaps you want to make sure that redundant data gets cleaned up in your 
+database when an object is deleted.</p>
+
+<p>Here's a simple example:</p>
+
+<pre><code>
+class Driver extends MyActiveRecord
+{   
+    function destroy()
+    {
+        foreach( $this-&gt;find_attached('Car') as $car )
+        {
+            $this-&gt;detach($car);
+        }
+        return parent::destroy();
+    }
+}
+</code></pre>
+
+<p><a href="#contents">^ Contents</a></p>
+
+
+<h2 id="transactions">Transactions</h2>
+
+<p>Simple transaction support is included via the static methods: <code>Begin()</code>, 
+<code>RollBack()</code> and <code>Commit()</code>. Here is an example of a transaction:</p>
+
+<pre><code>
+MyActiveRecord::Begin();
+$peter-&gt;balance-=10;
+$paul-&gt;balance+=10;
+$peter-&gt;save() or MyActiveRecord::RollBack();
+$paul-&gt;save() or MyActiveRecord::RollBack();
+MyActiveRecord::Commit()
+</code></pre>
+
+<p>For transactions to be enforced requires you to use InnoDB tables in your 
+database. If this is not the case, transactions will not be enforced, but
+the static methods will be silently ignored.</p>
+
+<a href="#contents">^ Contents</a>
+
+<h2 id="singletableinheritance">Single Table Inheritance</h2>
+
+<p><a href="http://www.martinfowler.com/eaaCatalog/singleTableInheritance.html">Single Table Inheritance</a>
+is a method for representing a hierarchy of classes in a single table. Let's say we have a <code>User</code>
+class, but we want to represent special classes of users, <em>administrators</em>. You could model this as follows:</p>
+	
+<pre><code>
+class User extends MyActiveRecord {}
+class Administrator extends User {}
+</code></pre>
+
+<p>This would be described in the database like this:</p>
+
+<pre><code>
+CREATE TABLE `user` (
+	`id` int(11) NOT NULL auto_increment,
+	`username` varchar(50) default NULL,
+	`password` varchar(50) default NULL,
+	`class` varchar(50) default NULL,
+	PRIMARY KEY  (`id`)
+)
+</code></pre>
+
+<p>So long as your table has a 'class' field, then MyActiveRecord will take care of the rest.
+For example, when calling:</p>
+
+<pre><code>
+$administrators = MyActiveRecord::FindAll('Administrator');
+</code></pre>
+
+<p>MyActiveRecord will silently check for the class field resulting in SQL like:</p>
+
+<pre><code>
+SELECT * FROM `user` WHERE class LIKE `Administrator`
+</code></pre>
+
+<p>And when saving an object of class <code>Administrator</code> the class field
+will be set automatically.</p>
+
+<p><a href="#contents">^ Contents</a></p>
+
+<h2 id="preparingsql">Preparing SQL Statements</h2>
+
+<p>Experienced programmers know that strings supplied by users cannot be passed into
+SQL statements unchecked. To do so encourages <a href="http://en.wikipedia.org/wiki/SQL_injection">SQL Injection attacks</a>.</p>
+
+<p>The <code>Prepare</code> method provides a simple way to escape input before it is put into SQL queries. You use it like this:
+	
+<pre><code>
+$sql = MyActiveRecord::Prepare( "SELECT * FROM user WHERE last_name LIKE '%s' AND age &gt; %d", $_GET['last_name'], $_GET['age'] );
+$users = MyActiveRecord::FindBySql($sql);
+</code></pre>
+
+<p>If the <code>%s</code> <code>%d</code> syntax looks unfamiliar, check the <a href="http://www.php.net/sprintf">sprintf</a>
+	documentation</p>
+	
+<p>The <code>Prepare</code> method can also be used on SQL fragments, eg:</p>
+
+<pre><code>
+$condition = MyActiveRecord::Prepare( "last_name LIKE '%s", $_GET['last_name'] );
+$users = MyActiveRecord::FindAll( 'User', $condition );
+</code></pre>
+	
+<p><a href="#contents">^ Contents</a></p>
+
+<h2 id="loggingsql">Logging &amp; Caching SQL</h2>
+
+<h3>Logging</h3>
+
+<p>MyActiveRecord provides an easy way to log all of the SQL statements being issued to the
+mysql database. This is handy for debugging your application.
+To start SQL Logging you simply set the <code>MYACTIVERECORD_LOG_SQL_TO</code> constant:</p>
+
+<pre><code>
+define('MYACTIVERECORD_LOG_SQL_TO', '/var/log/myar.sql.log');
+</code></pre>
+
+<p>You need to make sure that your web server has permission to write to the specified file/directory, but there
+is no need to create a blank log file, MyActiveRecord will do this automatically.</p>
+
+<h3>Caching</h3>
+
+<p>Most PHP scripts do a whole load of database SELECTS followed by a few UPDATES/INSERTS/DELETES and then redirect or die.
+This means that most PHP scripts can benefit from caching SQL results for the life-span of the script.
+You can achieve this easily by setting the <code>MYACTIVERECORD_CACHE_SQL</code> constant to <code>true</code>. Eg:</p>
+
+<pre><code>
+define('MYACTIVERECORD_CACHE_SQL', true);
+</code></pre>
+
+<p><a href="#contents">^ Contents</a></p>
+
+<h2 id="#freqdist">Frequency Distributions</h2>
+
+<p>It's often useful to know all of the unique (distinct) values for a given field in a given table, and the distribution 
+	(total of each distinct value represented)</p>
+<p>The <code>FreqDist</code> static method makes this simple. Here's an example:</p>
+
+<pre><code>
+$freqDist = MyActiveRecord::FreqDist('User', 'first_name');
+foreach($freqDist as $first_name=>$total)
+{
+	print "There are $total users called $first_name";
+}
+</pre></code>
+
+<p><a href="#contents">^ Contents</a></p>
+
+</body>
+</html>
