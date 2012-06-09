@@ -12,8 +12,6 @@
  * @copyright	2011 Ramon Antonio Parada
  * @version		0.5
  */
-
-
 class Database {
 	var $link;
 	var $count = 0;
@@ -30,18 +28,16 @@ class Database {
 	/**
 	 * Private function to create a new Database object
 	 */
-	function Database() {
+	function __construct() {
 
 		$this->link = @mysql_connect(SQL_HOST, SQL_LOGIN, SQL_PASSE);
-
-		//  or Database::busy();
+	   //  or Database::busy();
 		if ($this->link) {
-			if (!@mysql_select_db (SQL_DBASE)) {
+		  	if (!@mysql_select_db (SQL_DBASE)) {
 				$this->link = FALSE;
 			}
 		}
 		//or Database::busy();
-
 	}
 
 	function procesos() {
@@ -53,12 +49,10 @@ class Database {
 
 
 	function isbusy($limit = 5) {
-
 		return  ((!$this->link) || ($this->procesos() > $limit));
-
 	}
-
-
+	
+	
 	function busy() {
 		$error ="Estamos sufriendo una sobrecarga\n";
 		$smarty =& Smarty::getInstance();
@@ -66,22 +60,23 @@ class Database {
 		$smarty->display("error.tpl");
 		die ();
 	}
-	
-	/**
-	 * Retrieves an (unique) instance of the database handdler.
-	 */
-   	function &getInstance() {
+    
+	 
+    /**
+     * Retrieves an (unique) instance of the database handdler.
+     */
+   function &getInstance() {
 		static $singleton;
 
 		if (!$singleton)
 			$singleton = new Database();
-
 		return $singleton;
 	}
-	
-	/**
-	 * 
-	 */
+    
+	 
+    /**
+     * 
+     */
 	function query($sql) {
 		//if ($this->profiling){
 		//	$mysql_query('set profiling=1', $this->link);
@@ -108,7 +103,8 @@ class Database {
 
 		return $this->result;
 
-	}
+   }
+	
 	
 	/**
 	 * 
@@ -117,6 +113,7 @@ class Database {
 		mysql_close($this->link);
 	}
 
+
 	/**
 	 * 
 	 */
@@ -124,114 +121,121 @@ class Database {
 		return $this->count;
 	}
 
-	function found_rows() {
 
+	function found_rows() {
 		$sql = "SELECT FOUND_ROWS();";
 		$result = $this->query($sql);
 		$item  = $this->fetch_array($result, MYSQL_NUM);
 		return $item[0];
 	}
 
+
 	function fetch_array($query_id, $result_type= MYSQL_ASSOC ) {
-		$this->record = mysql_fetch_array($query_id,$result_type);
-		return $this->record;
-	}
+      $this->record = mysql_fetch_array($query_id,$result_type);
+      return $this->record;
+   }
 
 
 	function fetch_assoc($resource) {
-		$this->record = mysql_fetch_assoc($resource);
-		return $this->record;
-	}
+      $this->record = mysql_fetch_assoc($resource);
+      return $this->record;
+   }
 
 
- 	function fetch_object($query_id) {
-	   // $this->record = mysql_fetch_object($query_id);
-		return mysql_fetch_object($query_id);
-	}
-
-	function num_rows($query_id) {
-		return ($query_id) ? mysql_num_rows($query_id) : 0;
-	}
-
-	function num_fields($query_id) {
-		return ($query_id) ? mysql_num_fields($query_id) : 0;
-	}
+	function fetch_object($query_id, $class_name=null, $params=null) {
+      // $this->record = mysql_fetch_object($query_id);
+		if ($class_name == null)
+        return mysql_fetch_object($query_id);
+      return mysql_fetch_object($query_id, $class_name, $params);
+   }
 
 
-	function fetch_row($resource) {
+   function num_rows($query_id) {
+      return ($query_id) ? mysql_num_rows($query_id) : 0;
+   }
+
+
+   function num_fields($query_id) {
+      return ($query_id) ? mysql_num_fields($query_id) : 0;
+   }
+	 
+	 
+   function fetch_row($resource) {
 		return mysql_fetch_row($resource  );
-
 	}
 
-	function free_result($query_id) {
-		return mysql_free_result($query_id);
-	}
+
+   function free_result($query_id) {
+      return mysql_free_result($query_id);
+   }
+
 
 	/**
 	*@deprecated
 	*/
-	function real_escape_string($str) {
-		return mysql_real_escape_string($str);
-
+   function real_escape_string($str) {
+      return mysql_real_escape_string($str);
 	}
 
-	function affected_rows() {
-		return mysql_affected_rows($this->link);
-	}
 
-	function insert_id() {
+   function affected_rows() {
+      return mysql_affected_rows($this->link);
+   }
+
+
+   function insert_id() {
 		return mysql_insert_id();
-	}
+   }
+
 
 	function error() {
 		return $this->link?mysql_error($this->link):false;
 	}
 
+
 	/**
-		@deprecated
+	@deprecated
 	*/
-	function close_db() {
-		if($this->link) {
-			return mysql_close($this->link);
-		} else {
-			return false;
-		}
-	}
-
-
+   function close_db() {
+      if($this->link) {
+         return mysql_close($this->link);
+      } else {
+         return false;
+      }
+   }
+	 
+	 
 	function escape_string($str) {
-
 		return mysql_real_escape_string($str, $this->link);
-
 	}
 
 
-	function sql_error($sql) {
+   function sql_error($sql) {
 
-		$description = mysql_error();
-		$number = mysql_errno();
+		$description = mysql_error($this->link);
+		$number = mysql_errno($this->link);
 		if ($number == "0") {
-
 			Database::busy();
 		}
-		$message = "Query Error";
-		$error ="MySQL Error : $message\n";
-		$error .="User : ".SQL_LOGIN."\n";
-		$error.="Error Number: $number $description\n";
-		$error.="SQL		 : $sql\n";
-		$error.="Date		: ".date("D, F j, Y H:i:s")."\n";
-		$error.="IP		  : ".getenv("REMOTE_ADDR")."\n";
-		$error.="Browser	 : ".getenv("HTTP_USER_AGENT")."\n";
-		$error.="Referer	 : ".getenv("HTTP_REFERER")."\n";
-		$error.="PHP Version : ".PHP_VERSION."\n";
-		$error.="OS		  : ".PHP_OS."\n";
-		$error.="Server	  : ".getenv("SERVER_SOFTWARE")."\n";
-		$error.="Server Name : ".getenv("SERVER_NAME")."\n";
-		$error.="Script Name : ".getenv("SCRIPT_NAME")."\n";
-		echo($message);
-	   echo($error);
-		//exit();
-	}
+      $message = "Query Error";
+      $error ="MySQL Error : $message\n";
+      $error .="User : ".SQL_LOGIN."\n";
+      $error.="Error Number: $number $description\n";
+      $error.="SQL         : $sql\n";
+      $error.="Date        : ".date("D, F j, Y H:i:s")."\n";
+      $error.="IP          : ".getenv("REMOTE_ADDR")."\n";
+      $error.="Browser     : ".getenv("HTTP_USER_AGENT")."\n";
+      $error.="Referer     : ".getenv("HTTP_REFERER")."\n";
+      $error.="PHP Version : ".PHP_VERSION."\n";
+      $error.="OS          : ".PHP_OS."\n";
+      $error.="Server      : ".getenv("SERVER_SOFTWARE")."\n";
+      $error.="Server Name : ".getenv("SERVER_NAME")."\n";
+      $error.="Script Name : ".getenv("SCRIPT_NAME")."\n";
+		echo $message;
+		echo $error;
+		request::log($message);
+		request::log($error);
+   }
 
 }
 
