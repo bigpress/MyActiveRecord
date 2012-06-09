@@ -1,6 +1,17 @@
 <?php
 
-
+/**
+ *
+ * Copyright (c) 2003-2012  Ramon Antonio Parada <raamon@bigpress.net>
+ *
+ * Instance validator 
+ *
+ * @category	Database
+ * @package		MyActiveRecord
+ * @author		Ramon Antonio Parada <ramon@bigpress.net>
+ * @copyright	2012 Ramon Antonio Parada
+ * @version		0.5
+ */
 class MyValidator {
 
 
@@ -13,14 +24,10 @@ class MyValidator {
 	 * @param	string	strMessage	Error message to record if value does not match
 	 * @return	boolean	True if the field has a value. False if it does not.
 	 */
-	function validate_existence($strKey, $strMessage=null)
-	{
-		if( !empty($this->$strKey) )
-		{
+	function validate_existence($strKey, $strMessage=null)	{
+		if ( !empty($this->$strKey) ) {
 			return true;
-		}
-		else
-		{
+		} else {
 			$this->add_error($strKey, $strMessage ? $strMessage : 'Missing '.$strKey);
 			return false;
 		}
@@ -36,14 +43,10 @@ class MyValidator {
 	 * @param	string	strMessage	Error message to record if value does not match
 	 * @return	boolean	True if the field matches. False if it does not match.
 	 */
-	function validate_regexp($strKey, $strRegExp, $strMessage=null)
-	{
-		if( preg_match($strRegExp, $this->$strKey) )
-		{
+	function validate_regexp($strKey, $strRegExp, $strMessage=null) {
+		if( preg_match($strRegExp, $this->$strKey) ) {
 			return true;
-		}
-		else
-		{
+		} else {
 			$this->add_error($strKey, $strMessage ? $strMessage : 'Invalid '.$strKey);
 			return false;
 		}
@@ -57,16 +60,14 @@ class MyValidator {
 	 * @param	string	strMessage	Error message to record if value is not unique
 	 * @return	boolean true if field is unique, false if not
 	*/
-	function validate_uniqueness_of($strKey, $strMessage=null)
-	{
-		if ( empty($this->id) && MyActiveRecord::Count( get_class($this), "$strKey = '{$this->$strKey}'" ) > 0 )
-		{
+	function validate_uniqueness_of($strKey, $strMessage=null) {
+		if ( empty($this->id) && MyActiveRecord::Count( get_class($this), "$strKey = '{$this->$strKey}'" ) > 0 ) {
 			$this->add_error($strKey, $strMessage ? $strMessage : ucfirst($strKey).' is not unique');
 			return false;
-		}elseif(MyActiveRecord::Count( get_class($this), "$strKey = '{$this->$strKey}' AND id != " . ($this->id + 0) ) > 0){
+		} elseif(MyActiveRecord::Count( get_class($this), "$strKey = '{$this->$strKey}' AND id != " . ($this->id + 0) ) > 0){
 			$this->add_error($strKey, $strMessage ? $strMessage : ucfirst($strKey).' is not unique');
 			return false;
-		}else{
+		} else {
 			return true;
 		}		
 	}
@@ -79,7 +80,7 @@ class MyValidator {
 	 * @author Walter Lee Davis
 	 */
 
-	function validate_unique_email($strKey){
+	function validate_unique_email($strKey) {
 		return $this->validate_existence($strKey,'Please enter your e-mail address') &&
 			$this->validate_regexp($strKey,"/^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$/i", 'That didn&rsquo;t look like an e-mail address') &&
 			$this->validate_uniqueness_of($strKey,'This e-mail address is already registered');		
@@ -93,8 +94,9 @@ class MyValidator {
 	 * @author Walter Lee Davis
 	 */
 
-	function validate_email($strKey){
+	function validate_email($strKey) {
 		return $this->validate_existence($strKey,'Please enter your e-mail address') &&
 			$this->validate_regexp($strKey,"/^[a-z0-9\._-]+@+[a-z0-9\._-]+\.+[a-z]{2,6}$/i", 'That didn&rsquo;t look like an e-mail address');		
 	}
 }
+

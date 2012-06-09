@@ -2,7 +2,7 @@
 
 /**
  *
- * Copyright (C) 2003-2011  Ramon Antonio Parada <rap@ramonantonio.net>
+ * Copyright (c) 2003-2011  Ramon Antonio Parada <ramon@bigpress.net>
  *
  * Database class
  *

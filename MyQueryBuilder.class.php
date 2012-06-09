@@ -4,6 +4,11 @@
 /**
  * Helper class for building sql statements progmatically.
  *
+ * @category	Database
+ * @package		MyActiveRecord
+ * @author		Ramon Antonio Parada <ramon@bigpress.net>
+ * @copyright	2012 Ramon Antonio Parada
+ * @version		0.5
  * @package ActiveRecord
  */
 class MyQueryBuilder {
