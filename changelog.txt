@@ -1,3 +1,23 @@
+Changelog 0.6
+
+1. Custom table naming (by prefix or function)
+
+2. Validator functionality
+
+3. Query builder
+
+4. Object duplication
+
+
+Changelog 0.5
+
+1. External db class. Singleton
+
+2. Method chaining
+
+3. Uses exceptions instead of trigger error
+
+
 Changelog 0.3 - 0.4
  
 1. BUG FIXES
@@ -16,3 +36,5 @@ different name to parent_table_id
  
 3. ADDED FREQDIST() WHERE and LIMIT paramaters
 e.g. print_r( MyActiveRecord::FreqDist( 'Order', 'total_lines', "date BETWEEN '2005-01-01' AND '2006-01-01'" ) )
+
+

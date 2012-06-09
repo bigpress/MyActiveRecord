@@ -1,19 +1,19 @@
 <?php
 /**
- * Requirements : 
- * 	- tested to work with MySQL 5
- *	- tested to work on PHP 5
- *
- * Known bugs :
- *	- multi field indexes, shows only the last component
- *	- buggy key and index support
- *	
- * ToDo list :
- *	- better key and index support
- *	- some semantic updates
- *	- input data validator
- *	- support for triggers and procedures
- *	- anything else feedback shows it is required ...
+* Requirements : 
+* 	- tested to work with MySQL 5
+*	- tested to work on PHP 5
+*
+* Known bugs :
+*	- multi field indexes, shows only the last component
+*	- buggy key and index support
+*	
+* ToDo list :
+*	- better key and index support
+*	- some semantic updates
+*	- input data validator
+*	- support for triggers and procedures
+*	- anything else feedback shows it is required ...
  *
  * @category	Database
  * @package		MyActiveRecord
@@ -70,7 +70,7 @@ class MyStructMagic {
 	* 
 	*/
 	public function getRawDestinationData() {
-		$db =& Database::getInstance();
+	  $db =& Database::getInstance();
 
 
 		if( !empty($this->aDestinationData) ) {
@@ -87,12 +87,13 @@ class MyStructMagic {
 
 
 	/**
-	 * Exports a table to an object
+	 * Reads table info
 	 *
+	 * @static
 	 * @param $tablename Name of the table to export
 	 * @returns Object containing the table or null if not found
 	 */
-	public function export_table($tablename) {
+	public static function export_table($tablename) {
 		$db =& Database::getInstance();
 
 		$rDbTableList = $db->query("SHOW TABLE STATUS WHERE Name = '".$tablename."';");
@@ -104,7 +105,17 @@ class MyStructMagic {
 		$table->engine = $aRowTableList['Engine'];
 		$table->auto_increment = ( $aRowTableList['Auto_increment'] == 'NULL' || ( empty($aRowTableList['Auto_increment']) && $aRowTableList['Auto_increment'] != 0 ) ) ? 'NULL' : $aRowTableList['Auto_increment'] ;
 		$table->collation= $aRowTableList['Collation'];
+
+		//anadidos nuevos
+		$table->total_lenght = $aRowTableList['Data_length']+$aRowTableList['Index_length'];
+		$table->data_length = $aRowTableList['Data_length']; //data size
+		$table->index_length = $aRowTableList['Index_length']; //index size
+		$table->rows = $aRowTableList['Rows']; //total rows
+		$table->avg_row_length = $aRowTableList['Avg_row_length']; //average size per row
 		
+
+
+
 		$rCreateTableQuery = $db->query("SHOW CREATE TABLE $tablename;");
 		$aCreateTable = $db->fetch_array($rCreateTableQuery);
 		$table->createtable = addslashes($aCreateTable[1]);
@@ -507,5 +518,11 @@ class MyStructMagic {
 	*/
 	public function getError() {
 		return ( $this->bError ) ? $this->sError : false ;
+	}
+
+	public function getTableSize() {
+//TODO necesario para facturar clientes
+		$sql ="SELECT table_schema \"Data Base Name\", sum( data_length + index_length ) / 1024 / 1024 \"Data Base Size in MB\" FROM information_schema.TABLES GROUP BY table_schema";
+
 	}
 }

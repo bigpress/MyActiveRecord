@@ -1,0 +1,146 @@
+<div id="wiki-content">
+  <div class="wrap">
+  <div id="wiki-body" class="gollum-textile-content instapaper_body">
+    <div class="markdown-body">
+      <p>A many-to-many relationship exists when one or more of one object can belong to one or more of another object. For example, a recipe has many ingredients, and those ingredients may be shared by many other recipes.</p>
+<p>MyActiveRecord uses a join table to make this possible. By convention, the join table is named for the two tables it joins, with the table names set in alphabetical order. So you might have the following tables:</p>
+<pre><code>recipes
+    id (int: 11, primary key)
+    name (varchar: 255)
+    difficulty (int: 11)
+    method (text)
+    preparation_time (int: 11)
+    added_at (datetime)</code></pre>
+<pre><code>ingredients
+    id (int: 11, primary key)
+    name (varchar: 255)
+    form (varchar: 255)
+    added_at (datetime)</code></pre>
+<p>The join table between these tables would look like this:</p>
+<pre><code>ingredients_recipes
+    ingredients_id (int: 11)
+    recipes_id (int: 11)</code></pre>
+<p>Now, to join ingredients to a recipe, you use the class method <code>MyActiveRecord::Link</code> or the object method <code>$myobject-&gt;attach</code>. The only rule that must be followed here is that both objects have to be saved before you attempt the link.</p>
+<pre><code>define('MYACTIVERECORD_CONNECTION_STR', 'mysql://username:password@localhost/databasename');
+require_once('MyActiveRecord.php');
+class recipes extends MyActiveRecord{
+    function save(){
+        if($this-&gt;id &lt; 1) $this-&gt;added_at = $this-&gt;DbDateTime();
+        return parent::save();
+    }
+}
+class ingredients extends MyActiveRecord{
+    function save(){
+        if($this-&gt;id &lt; 1) $this-&gt;added_at = $this-&gt;DbDateTime();
+        return parent::save();
+    }
+}
+$enchiladas = MyActiveRecord::Create('recipes',
+    array('name' =&gt; 'Enchiladas', 'difficulty' =&gt; 4)
+);
+$enchiladas-&gt;save();
+$chicken = MyActiveRecord::Create('ingredients',
+    array('name' =&gt; 'Chicken', 'form' =&gt; 'meat')
+);
+$chicken-&gt;save();
+$poblano = MyActiveRecord::Create('ingredients',
+    array('name' =&gt; 'Poblano Chili', 'form' =&gt; 'dried')
+);
+$poblano-&gt;save();
+$onion = MyActiveRecord::Create('ingredients',
+    array('name' =&gt; 'Onion', 'form' =&gt; 'vegetable')
+);
+$onion-&gt;save();
+$garlic = MyActiveRecord::Create('ingredients',
+    array('name' =&gt; 'Garlic', 'form' =&gt; 'vegetable')
+);
+$garlic-&gt;save();
+$corn_tortilla = MyActiveRecord::Create('ingredients',
+    array('name' =&gt; 'Corn Tortilla', 'form' =&gt; 'bread')
+);
+$corn_tortilla-&gt;save();
+$enchiladas-&gt;attach($chicken);
+$enchiladas-&gt;attach($poblano);
+$enchiladas-&gt;attach($onion);
+$enchiladas-&gt;attach($garlic);
+$enchiladas-&gt;attach($corn_tortilla);</code></pre>
+<p>So now you have a relationship between the one recipe and four ingredients. Now, let’s add another recipe and see where this gets interesting.</p>
+<pre><code>$tacos = MyActiveRecord::Create('recipes',
+    array('name' =&gt; 'Tacos', 'difficulty' =&gt; 2)
+);
+$tacos-&gt;save();
+$green_chile = MyActiveRecord::Create('ingredients',
+    array('name' =&gt; 'Green Chile', 'form' =&gt; 'vegetable')
+);
+$green_chile-&gt;save();
+$tacos-attach($chicken);
+$tacos-&gt;attach($green_chile);
+$tacos-&gt;attach($onion);
+$tacos-&gt;attach($garlic);
+$tacos-&gt;attach($corn_tortilla);</code></pre>
+<p>So now, you could try some Find methods:</p>
+<pre><code>$recipes = MyActiveRecord::FindAll('recipes','difficulty &gt; 1');</code></pre>
+<p>That’s all (both) recipes in an array.</p>
+<pre><code>$green_chile = MyActiveRecord::FindFirst('ingredients', 'name LIKE "green chile"');
+$recipes = $green_chile-&gt;find_attached('recipes');</code></pre>
+<p>And that would return Tacos, since it’s the only one with green chiles in it. Now even more interesting would be to get the ingredients in a single recipe:</p>
+<pre><code>$tacos = MyActiveRecord::FIndFirst('recipes', 'name LIKE "tacos"');
+$ingredients = $tacos-&gt;find_attached('ingredients');</code></pre>
+<p>And that returns the list of ingredients in the recipe.</p>
+<p>Now let’s look at how to handle this in a form. There’s a couple of different ways you could model this in an <span class="caps">HTML</span> form without going into more exotic constructions like Ajax lookups of ingredients. One of the simplest would be to use an array of checkboxes for your ingredients. When you submit that form, <span class="caps">PHP</span> will interpret the results as if ingredients was an array of the checked elements. The only detail you will need to cover separately is to detach any ingredients that were already attached, so you don’t end up with duplicates or with ingredients that cannot be removed.</p>
+<p>So here’s a basic form:</p>
+<pre><code>
+&lt;?php
+define('MYACTIVERECORD_CONNECTION_STR', 'mysql://username:password@localhost/databasename');
+require_once('MyActiveRecord.php');
+class recipes extends MyActiveRecord{
+    function save(){
+        if($this-&gt;id &lt; 1) $this-&gt;added_at = $this-&gt;DbDateTime();
+        return parent::save();
+    }
+}
+class ingredients extends MyActiveRecord{
+    function save(){
+        if($this-&gt;id &lt; 1) $this-&gt;added_at = $this-&gt;DbDateTime();
+        return parent::save();
+    }
+}
+if(isset($_REQUEST['id']) &amp;&amp; $_REQUEST['id'] &gt; 0){
+    if(!$recipe = MyActiveRecord::FindById('recipes',$_REQUEST['id'])) $recipe = MyActiveRecord::Create('recipes');
+}
+if(isset($_POST['save'])){
+    //save the form
+    $recipe-&gt;populate($_POST);
+    $recipe-&gt;save();
+    if(!$recipe-&gt;get_errors()){
+        //first detach all ingredients
+        MyActiveRecord::Query('DELETE FROM ingredients_recipes WHERE recipes_id = ' . $recipe-&gt;id);
+        //then attach all that are currently selected
+        if (is_array($_POST['ingredients'])) $recipe-&gt;set_attached('ingredients',$_POST['ingredients']);
+    }
+}
+?&gt;
+&lt;form action="recipe.php" method="post"&gt;
+    &lt;p&gt;&lt;label for="name"&gt;Name&lt;/label&gt;&lt;input name="name" id="name" value="&lt;?=h($name)?&gt;" /&gt;
+    &lt;input type="hidden" name="id" value="&lt;?=$recipe-&gt;id?&gt;" /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;label for="difficulty"&gt;Difficulty&lt;/label&gt;&lt;input name="difficulty" id="difficulty" value="&lt;?=h($difficulty)?&gt;" /&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;label for="method"&gt;Method&lt;/label&gt;&lt;textarea name="method" id="method" cols="40" rows="20"&gt;&lt;?=h($name)?&gt;&lt;/textarea&gt;&lt;/p&gt;
+    &lt;p&gt;&lt;label for="preparation_time"&gt;Preparation Time&lt;/label&gt;&lt;input name="preparation_time" id="preparation_time" value="&lt;?=h($preparation_time)?&gt;" /&gt;&lt;/p&gt;
+&lt;?php
+//a checkbox for each ingredient
+$current_ingredients = $recipe-&gt;find_attached('ingredients');
+foreach(MyActiveRecord::FindAll('ingredients',null,'name ASC') as $ingredient){
+    print '    &lt;p&gt;&lt;label for="ingredients_' . $ingredient-&gt;id . '"&gt;' . $ingredient-&gt;h('name') . '&lt;/label&gt;
+        &lt;input type="checkbox" name="ingredients[' . $ingredient-&gt;id . ']" 
+        id="ingredients_' . $ingredient-&gt;id . '" value="' . $ingredient-&gt;id . '"';
+    if(array_key_exists($ingredient-&gt;id,$current_ingredients)) print ' checked="checked";
+    print ' /&gt;&lt;/p&gt;';
+}
+?&gt;
+    &lt;p&gt;&lt;input type="submit" value="Save" name="save" /&gt;&lt;/p&gt;
+&lt;/form&gt;</code></pre>
+    </div>
+  </div>
+  </div>
+
+</div>

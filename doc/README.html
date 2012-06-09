@@ -1,0 +1,72 @@
+<div class="markdown-body">
+      <h3>History</h3>
+<p>MyActiveRecord enables you to use the Active Record pattern, as described by Martin Fowler, in <span class="caps">PHP</span> 4 or 5. Active Record maps Classes to database tables, and Objects to rows within that table. A change to the database structure is immediately reflected in the structure of the Class and its Objects.</p>
+<h3>Requirements</h3>
+<p>MyActiveRecord is deliberately simplified to work in the following environment:</p>
+<ol>
+<li>MySQL 4+ (5+ is preferable)</li>
+	<li>
+<span class="caps">PHP</span> 4.3+ (5+ is preferable)</li>
+	<li>For each Class in your application, a table in your database with the exact same name in lower-case</li>
+	<li>For each of these tables, the Primary Key must be named ‘id’ and must be an auto-incrementing integer type.</li>
+</ol><p>If you meet these requirements, you will be able to use a bare minimum of code to get and set object properties from within your application.</p>
+<h3>Example</h3>
+<pre><code>
+define('MYACTIVERECORD_CONNECTION_STR', 'mysql://username:password@localhost/databasename');
+require_once('MyActiveRecord.0.5.php');
+function clean($mxdInput){
+    //recursive function for multidimensional arrays
+    if(is_string($mxdInput)) return trim(strip_tags($mxdInput));
+    $out = array();
+    foreach($mxdInput as $k=&gt;$v){
+        $out[$k] = clean($v);
+    }
+    return $out;
+}
+function fixtures(){
+	//this sets up the table if you haven't got one
+	if(!MyActiveRecord::TableExists('people')){
+		$dummy = "CREATE TABLE IF NOT EXISTS `people` (
+			`id` int(11) NOT NULL auto_increment,
+			`name` varchar(255) default NULL,
+			`email` varchar(255) default NULL,
+			`message` text,
+			PRIMARY KEY  (`id`)
+		) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8";
+		return MyActiveRecord::Query($dummy);
+	}
+	return true;
+}
+fixtures(); //you can comment this out after the first run to save a few cycles
+Class People extends MyActiveRecord{
+    function save(){
+        $this-&gt;validate_existence('name','Please tell us who you are');
+        $this-&gt;validate_email('email');
+        $this-&gt;validate_regexp('message','/[\w\d]{2,}/','Didn\'t you have anything to say?');
+        return parent::save();
+    }
+}
+if(isset($_GET['id'])){
+    $person = MyActiveRecord::FindById('People',clean($_GET['id']));
+}
+//rescue for new or missing person
+if(!isset($person) || !is_object($person)) $person = MyActiveRecord::Create('People');
+if(isset($_POST['save'])){
+    $person-&gt;populate(clean($_POST));
+    $person-&gt;save();
+    if(!$person-&gt;get_errors()){
+        header('Location: http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?id=' . $person-&gt;id); 
+    }else{
+        print_r($person-&gt;get_errors());
+    }
+}
+$page = '&lt;form method="post" action=""&gt;&lt;ul&gt;';
+foreach(get_object_vars($person) as $k =&gt; $v){
+    if($k != 'id' &amp;&amp; substr($k,0,1) != '_')
+        $page .= '&lt;li&gt;&lt;label for="' . $k . '"&gt;' . $k . '&lt;/label&gt;&lt;input type="text" name="' . $k . '" value="' . $person-&gt;h($k) . '" /&gt;&lt;/li&gt;';
+}
+$page .= '&lt;li&gt;&lt;input type="submit" name="save" value="Save" /&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/form&gt;';
+//add a decent XHTML page shell here, and print $page in the middle of it
+</code></pre>
+<p>And as long as you have a table in your database named ‘people’ with the fields <code>id</code>, <code>name</code>, <code>email</code>, and <code>message</code>, you will now have a complete working read/write system for that table.</p>
+    </div>
